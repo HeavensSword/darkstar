@@ -1499,6 +1499,26 @@ INSERT INTO `mob_spell_lists` VALUES ('Oupire', 150, 274, 1, 255); -- Sleepga II
 -- Wake Warder Wanda
 INSERT INTO `mob_spell_lists` VALUES ('Wake_Warder_Wanda', 151, 240, 1, 255);  -- Drown
 
+INSERT INTO `mob_spell_lists` VALUES ('Chloris', 152, 366, 1, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Albumens_Korrigan', 153, 158, 1, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Albumens_Korrigan', 153, 359, 1, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Albumens_Korrigan', 153, 366, 1, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Ancient_Magic', 154, 204, 60, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Ancient_Magic', 154, 206, 50, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Ancient_Magic', 154, 208, 52, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Ancient_Magic', 154, 210, 54, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Ancient_Magic', 154, 212, 56, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Ancient_Magic', 154, 214, 58, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Pancimanci', 155, 176, 1, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Pancimanci', 155, 181, 1, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Pancimanci', 155, 186, 1, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Pancimanci', 155, 191, 1, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Pancimanci', 155, 196, 1, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Pancimanci', 155, 201, 1, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Pancimanci', 155, 357, 1, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Pancimanci', 155, 366, 1, 255);
+INSERT INTO `mob_spell_lists` VALUES ('Pancimanci', 155, 286, 1, 255);
+
 /*!40000 ALTER TABLE `mob_spell_lists` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
