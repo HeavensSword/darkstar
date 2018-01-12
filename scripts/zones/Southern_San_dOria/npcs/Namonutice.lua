@@ -2,7 +2,7 @@
 --  Area: Southern San d'Oria
 --  NPC: Namonutice
 --  Fame Checker
---  @zone: 230
+--  @zone 230
 -----------------------------------
 
 require("scripts/globals/quests");
@@ -21,7 +21,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x001f, player:getFame(SANDORIA));
+    player:startEvent(31, player:getFame(SANDORIA));
 end;
 
 -----------------------------------
@@ -29,8 +29,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -38,8 +38,8 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
  
  

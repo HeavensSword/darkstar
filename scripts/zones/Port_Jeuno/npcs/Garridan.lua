@@ -1,8 +1,8 @@
 -----------------------------------
 -- Area: Port Jeuno
--- NPC: 
+-- NPC:
 -- @zone 246
--- @pos 
+-- !pos
 -----------------------------------
 
 package.loaded["scripts/zones/Port_Jeuno/TextIDs"] = nil;
@@ -13,7 +13,7 @@ require("scripts/zones/Port_Jeuno/TextIDs");
 -----------------------------------
 
 function onTrade(player,npc,trade)
-end; 
+end;
 
 -----------------------------------
 -- onTrigger Action
@@ -21,15 +21,15 @@ end;
 
 function onTrigger(player,npc)
 
-end; 
+end;
 
 -----------------------------------
 -- onEventUpdate
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -37,9 +37,7 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
-
-
 

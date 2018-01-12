@@ -2,8 +2,8 @@
 --  Area: Northern San d'Oria
 --  NPC: Ronpaurege
 --  Type: Standard Info NPC
---  @zone: 231
---  @pos 65.739 -0.199 74.275
+--  @zone 231
+-- !pos 65.739 -0.199 74.275
 --
 -----------------------------------
 
@@ -19,7 +19,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x029d);    
+    player:startEvent(669);
 end;
 
 -----------------------------------

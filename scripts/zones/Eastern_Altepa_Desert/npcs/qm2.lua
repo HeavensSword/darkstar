@@ -2,7 +2,7 @@
 -- Area: Eastern Altepa Desert
 -- NPC:  qm2 (???)
 -- Involved In Quest: 20 in Pirate Years
--- @pos 47.852 -7.808 403.391 114
+-- !pos 47.852 -7.808 403.391 114
 -----------------------------------
 package.loaded["scripts/zones/Eastern_Altepa_Desert/TextIDs"] = nil;
 -----------------------------------
@@ -23,14 +23,14 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    
+
     twentyInPirateYearsCS = player:getVar("twentyInPirateYearsCS");
     TsuchigumoKilled = player:getVar("TsuchigumoKilled");
-    
+
     if (twentyInPirateYearsCS == 3 and TsuchigumoKilled <= 1) then
         player:messageSpecial(SENSE_OF_FOREBODING);
-        SpawnMob(17244524,300):updateClaim(player);
-        SpawnMob(17244525,300):updateClaim(player);
+        SpawnMob(17244524):updateClaim(player);
+        SpawnMob(17244525):updateClaim(player);
     elseif (twentyInPirateYearsCS == 3 and TsuchigumoKilled >= 2) then
         player:addKeyItem(TRICK_BOX);
         player:messageSpecial(KEYITEM_OBTAINED,TRICK_BOX);
@@ -39,7 +39,7 @@ function onTrigger(player,npc)
     else
         player:messageSpecial(NOTHING_OUT_OF_ORDINARY);
     end
-    
+
 end;
 
 -----------------------------------
@@ -47,8 +47,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -56,6 +56,6 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;

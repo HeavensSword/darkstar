@@ -1,5 +1,5 @@
 ---------------------------------------------------------------------------------------------------
--- func: @delmission <logID> <missionID> <player>
+-- func: delmission <logID> <missionID> <player>
 -- desc: Deletes the given mission from the GM or target player.
 ---------------------------------------------------------------------------------------------------
 
@@ -11,27 +11,44 @@ cmdprops =
     parameters = "sss"
 };
 
+function error(player, msg)
+    player:PrintToPlayer(msg);
+    player:PrintToPlayer("!delmission <logID> <missionID> {player}");
+end;
+
 function onTrigger(player, logId, missionId, target)
+    -- validate logId
+    local logName;
+    local logInfo = GetMissionLogInfo(logId);
+    if (logInfo == nil) then
+        error(player, "Invalid logID.");
+        return;
+    end
+    logName = logInfo.full_name;
+    logId = logInfo.mission_log;
     
-    logId = tonumber(logId) or _G[logId];
-    missionId = tonumber(missionId) or _G[missionId];
-    
-    if (missionId == nil or logId == nil) then
-        player:PrintToPlayer( "You must enter a valid log id and mission id!" );
-        player:PrintToPlayer( "@delmission <logID> <missionID> <player>" );
+    -- validate missionId
+    if (missionId ~= nil) then
+        missionId = tonumber(missionId) or _G[string.upper(missionId)];
+    end
+    if (missionId == nil or missionId < 0) then
+        error(player, "Invalid missionID.");
         return;
     end
 
+    -- validate target
+    local targ;
     if (target == nil) then
-        target = player:getName();
+        targ = player;
+    else
+        targ = GetPlayerByName(target);
+        if (targ == nil) then
+            error(player, string.format("Player named '%s' not found!", target));
+            return;
+        end
     end
 
-    local targ = GetPlayerByName(target);
-    if (targ ~= nil) then
-        targ:delMission( logId, missionId );
-        player:PrintToPlayer( string.format( "Deleted Mission for log %u with ID %u from %s", logId, missionId, target ) );
-    else
-        player:PrintToPlayer( string.format( "Player named '%s' not found!", target ) );
-        player:PrintToPlayer( "@delmission <logID> <missionID> <player>" );
-    end
+    -- delete mission
+    targ:delMission(logId, missionId);
+    player:PrintToPlayer(string.format("Deleted %s mission %i from %s.", logName, missionId, targ:getName()));
 end;

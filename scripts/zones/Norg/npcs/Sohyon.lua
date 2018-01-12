@@ -2,9 +2,9 @@
 --  Area: Norg
 --   NPC: Sohyon
 --  Type: Standard NPC
--- @zone: 252
---  @pos 47.286 -7.282 13.873
--- 
+-- @zone 252
+-- !pos 47.286 -7.282 13.873
+--
 -- Auto-Script: Requires Verification (Verified by Brawndo)
 -----------------------------------
 package.loaded["scripts/zones/Norg/TextIDs"] = nil;
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x00d4);
+    player:startEvent(212);
 end;
 
 -----------------------------------

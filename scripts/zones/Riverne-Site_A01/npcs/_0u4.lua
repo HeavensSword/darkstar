@@ -29,7 +29,7 @@ end;
 function onTrigger(player,npc)
 
     if (npc:getAnimation() == 8) then
-        player:startEvent(0x20);
+        player:startEvent(32);
     else
         player:messageSpecial(SD_VERY_SMALL);
     end;
@@ -43,8 +43,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -52,6 +52,6 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;

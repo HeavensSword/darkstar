@@ -2,7 +2,7 @@
 -- Area: Ru'Lude Gardens
 -- NPC:  Magian Moogle (Blue Bobble)
 -- Type: Magian Trials NPC (Relic Armor)
--- @pos -6.843 2.459 121.9 64
+-- !pos -6.843 2.459 121.9 64
 -----------------------------------
 package.loaded["scripts/zones/RuLude_Gardens/TextIDs"] = nil;
 package.loaded["scripts/globals/magiantrials"] = nil;
@@ -19,7 +19,7 @@ require("scripts/globals/magiantrials");
 
 function onTrade(player,npc,trade)
     if (trade:getItemCount() == 1) then
-        local ItemID = trade:getItem();
+        local ItemID = trade:getItemId();
         local TrialInfo = getRelicTrialInfo(ItemID);
         local invalid = 0;
         if (TrialInfo.t1 == 0 and TrialInfo.t2 == 0 and TrialInfo.t3 == 0 and TrialInfo.t4 == 0) then

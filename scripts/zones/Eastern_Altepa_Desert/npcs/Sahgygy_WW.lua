@@ -2,7 +2,7 @@
 -- Area: Eastern Altepa Desert
 --  NPC: Sahgygy, W.W.
 -- Border Conquest Guards
--- @pos 226.493 -12.231 260.194 114
+-- !pos 226.493 -12.231 260.194 114
 -----------------------------------
 package.loaded["scripts/zones/Eastern_Altepa_Desert/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Eastern_Altepa_Desert/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Eastern_Altepa_Desert/TextIDs");
 
-local guardnation = WINDURST; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_WINDURST; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 4;        -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = KUZOTZ;
 local csid        = 0x7ff6;

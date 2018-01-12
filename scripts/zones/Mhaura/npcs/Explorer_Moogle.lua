@@ -1,6 +1,6 @@
 -----------------------------------
---    Area: Mhaura
---    NPC:  Explorer Moogle
+-- Area: Mhaura
+-- NPC:  Explorer Moogle
 -----------------------------------
 package.loaded["scripts/zones/Mhaura/TextIDs"] = nil;
 -----------------------------------
@@ -23,7 +23,7 @@ end;
 function onTrigger(player,npc) 
 
     local accept = 0;
-    local event  = 0x014e;
+    local event  = 334;
     
     if (player:getGil() < 300) then
         accept = 1;
@@ -39,8 +39,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -48,12 +48,12 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 
     local price = 300;
     
-    if (csid == 0x014e) then
+    if (csid == 334) then
         if (option == 1 and player:delGil(price)) then        
             toExplorerMoogle(player,231);
         elseif (option == 2 and player:delGil(price)) then    

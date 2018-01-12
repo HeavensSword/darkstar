@@ -31,8 +31,16 @@
 
 
 int32 checksum(uint8* buf,uint32 buflen,char checkhash[16]);
+int config_switch(const char* str);
+bool bin2hex(char* output, unsigned char* input, size_t count);
 
-float distance(const position_t& A, const position_t& B);						// расстояние между двумя точками
+float distance(const position_t& A, const position_t& B);		// distance between positions
+float distanceSquared(const position_t& A, const position_t& B);// squared distance between positions (use squared unless otherwise needed)
+constexpr float square(float distance)                          // constexpr square (used with distanceSquared)
+{
+    return distance * distance;
+}
+
 int32 intpow32(int32 base, int32 exponent);						// Exponential power of integers
 void getMSB(uint32* result,uint32 value);						// fast Most Significant Byte search under GCC or MSVC. Fallback included.
 float rotationToRadian(uint8 rotation);
@@ -57,10 +65,10 @@ uint64 unpackBitsLE(uint8* target,int32 bitOffset, uint8 lengthInBit);
 uint64 unpackBitsLE(uint8* target,int32 byteOffset, int32 bitOffset, uint8 lengthInBit);
 
     // Encode/Decode Strings to/from FFXI 6-bit format
-int8* EncodeStringLinkshell(int8* signature, int8* target);
-int8* DecodeStringLinkshell(int8* signature, int8* target);
+void EncodeStringLinkshell(int8* signature, int8* target);
+void DecodeStringLinkshell(int8* signature, int8* target);
 int8* EncodeStringSignature(int8* signature, int8* target);
-int8* DecodeStringSignature(int8* signature, int8* target);
+void DecodeStringSignature(int8* signature, int8* target);
 std::string escape(std::string const &s);
 
 #endif

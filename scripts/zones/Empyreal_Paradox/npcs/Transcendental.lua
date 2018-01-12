@@ -31,7 +31,7 @@ function onTrigger(player,npc)
     --player:addMission(COP, DAWN);
     --player:setVar("PromathiaStatus",3);
    if (player:getCurrentMission(COP) == DAWN and player:getVar("PromathiaStatus")==1) then
-      player:startEvent(0x0002);            
+      player:startEvent(2);            
     elseif (EventTriggerBCNM(player,npc)) then
     end
 end;
@@ -41,8 +41,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("onUpdate CSID: %u",csid);
---printf("onUpdate RESULT: %u",option);
+    -- printf("onUpdate CSID: %u",csid);
+    -- printf("onUpdate RESULT: %u",option);
     
     EventUpdateBCNM(player,csid,option)
 end;
@@ -52,9 +52,9 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("onFinish CSID: %u",csid);
---printf("onFinish RESULT: %u",option);
-    if ( csid == 0x0002) then
+    -- printf("onFinish CSID: %u",csid);
+    -- printf("onFinish RESULT: %u",option);
+    if ( csid == 2) then
      player:setVar("PromathiaStatus",2);
     elseif (EventFinishBCNM(player,csid,option)) then
         return;

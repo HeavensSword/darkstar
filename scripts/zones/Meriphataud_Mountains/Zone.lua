@@ -4,14 +4,14 @@
 --
 -----------------------------------
 package.loaded["scripts/zones/Meriphataud_Mountains/TextIDs"] = nil;
-package.loaded["scripts/globals/chocobo_digging"] = nil;
 -----------------------------------
-
 require("scripts/zones/Meriphataud_Mountains/TextIDs");
+require("scripts/zones/Meriphataud_Mountains/MobIDs");
 require("scripts/globals/icanheararainbow");
-require("scripts/globals/zone");
-require("scripts/globals/conquest");
 require("scripts/globals/chocobo_digging");
+require("scripts/globals/conquest");
+require("scripts/globals/missions");
+require("scripts/globals/zone");
 
 -----------------------------------
 -- Chocobo Digging vars
@@ -62,15 +62,11 @@ end;
 -----------------------------------
 
 function onInitialize(zone)
-    local manuals = {17265291,17265292,17265293};
+    UpdateNMSpawnPoint(WARAXE_BEAK);
+    GetMobByID(WARAXE_BEAK):setRespawnTime(math.random(900, 10800));
 
-    SetFieldManual(manuals);
-
-    -- Waraxe Beak
-    SetRespawnTime(17264828, 900, 10800);
-
-    -- Coo Keja the Unseen
-    SetRespawnTime(17264946, 900, 10800);
+    UpdateNMSpawnPoint(COO_KEJA_THE_UNSEEN);
+    GetMobByID(COO_KEJA_THE_UNSEEN):setRespawnTime(math.random(900, 10800));
 
     SetRegionalConquestOverseers(zone:getRegionID())
 end;
@@ -87,9 +83,9 @@ function onZoneIn( player, prevZone)
     end
 
     if (triggerLightCutscene(player)) then -- Quest: I Can Hear A Rainbow
-        cs = 0x001f;
+        cs = 31;
     elseif (player:getCurrentMission(WINDURST) == VAIN and player:getVar("MissionStatus") ==1) then
-        cs = 0x0022; -- no update for castle oztroja (north)
+        cs = 34; -- no update for castle oztroja (north)
     end
 
     return cs;
@@ -121,9 +117,9 @@ end;
 function onEventUpdate( player, csid, option)
     -- printf("CSID: %u",csid);
     -- printf("RESULT: %u",option);
-    if (csid == 0x001f) then
+    if (csid == 31) then
         lightCutsceneUpdate(player); -- Quest: I Can Hear A Rainbow
-    elseif (csid == 0x0022) then
+    elseif (csid == 34) then
         if (player:getPreviousZone() == 120) then
             player:updateEvent(0,0,0,0,0,2);
         elseif (player:getPreviousZone() == 117) then
@@ -139,7 +135,7 @@ end;
 function onEventFinish( player, csid, option)
     -- printf("CSID: %u",csid);
     -- printf("RESULT: %u",option);
-    if (csid == 0x001f) then
+    if (csid == 31) then
         lightCutsceneFinish(player); -- Quest: I Can Hear A Rainbow
     end
 end;

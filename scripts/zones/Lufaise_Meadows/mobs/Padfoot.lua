@@ -1,11 +1,11 @@
 -----------------------------------
 -- Area: Lufaise Meadows
 --  MOB: Padfoot
--- @pos 260.445 -1.761 -27.862 24 (True Copy)     16875578
--- @pos 412.447 -0.057 -200.161 24 (Fake Copies)  16875615
--- @pos -378.950 -15.742 144.215 24    ||       16875703
--- @pos -43.689 0.487 -328.028 24      ||       16875552
--- @pos -141.523 -15.529 91.709 24     \/     16875748
+-- !pos 260.445 -1.761 -27.862 24 (True Copy)     16875578
+-- !pos 412.447 -0.057 -200.161 24 (Fake Copies)  16875615
+-- !pos -378.950 -15.742 144.215 24    ||       16875703
+-- !pos -43.689 0.487 -328.028 24      ||       16875552
+-- !pos -141.523 -15.529 91.709 24     \/     16875748
 -- TODO: the "true" Padfoot should not always be the same one at same pos every spawn cycle.
 -----------------------------------
 
@@ -23,12 +23,12 @@ function onMobSpawn(mob)
     }
 
     if (mob:getID() == 16875578) then
-        local random = math.random(table.getn(PadfootCloneSpawn));
+        local random = math.random(#PadfootCloneSpawn);
         -- pick random padfoot to spawn as
         local myPadfoot = PadfootCloneSpawn[random];
 
         local i = 1;
-        while i <= (table.getn(PadfootCloneSpawn)) do
+        while i <= (#PadfootCloneSpawn) do
 
             local padfoot = PadfootCloneSpawn[i]
             UpdateNMSpawnPoint(padfoot);
@@ -61,6 +61,13 @@ function onMobSpawn(mob)
 end;
 
 -----------------------------------
+-- onMobDeath
+-----------------------------------
+
+function onMobDeath(mob, player, isKiller)
+end;
+
+-----------------------------------
 -- OnMobDespawn
 -----------------------------------
 
@@ -77,7 +84,7 @@ function onMobDespawn(mob)
     if (mob:getID() == 16875578) then
         local i = 1;
 
-        while i <= (table.getn(PadfootClone)) do
+        while i <= (#PadfootClone) do
             if (GetMobAction(PadfootClone[i]) ~= 0) then
                 DespawnMob(PadfootClone[i]);
             end

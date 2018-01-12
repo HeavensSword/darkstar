@@ -1,8 +1,8 @@
 -----------------------------------
---    Area: Mhaura
---    NPC:  Pikini-Mikini
---    Standard Merchant NPC
---    @pos -48 -4 30 249
+-- Area: Mhaura
+-- NPC:  Pikini-Mikini
+-- Standard Merchant NPC
+-- !pos -48 -4 30 249
 -----------------------------------
 package.loaded["scripts/zones/Mhaura/TextIDs"] = nil;
 -----------------------------------
@@ -15,7 +15,7 @@ require("scripts/zones/Mhaura/TextIDs");
 -----------------------------------
 
 function onTrade(player,npc,trade)
-end; 
+end;
 
 -----------------------------------
 -- onTrigger Action
@@ -36,17 +36,17 @@ stock = {0x1036,2335,  --Eye Drops
          0x1118,108,   --Meat Jerky
          0x14b3,133,   --Salsa
          0x0b33,9000}  --Mhaura Waystone
- 
+
 showShop(player, STATIC, stock);
-end; 
+end;
 
 -----------------------------------
 -- onEventUpdate
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -54,6 +54,6 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;

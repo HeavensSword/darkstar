@@ -2,7 +2,7 @@
 -- Area: Selbina
 -- NPC:  Thunder Hawk
 -- Starts and Finishes Quest: The Rescue
--- @pos -58 -10 6 248
+-- !pos -58 -10 6 248
 -----------------------------------
 package.loaded["scripts/zones/Selbina/TextIDs"] = nil;
 -----------------------------------
@@ -17,7 +17,7 @@ require("scripts/globals/quests");
 -----------------------------------
 
 function onTrade(player,npc,trade)
-end; 
+end;
 
 -----------------------------------
 -- onTrigger Action
@@ -26,17 +26,17 @@ end;
 function onTrigger(player,npc)
     local TheRescue = player:getQuestStatus(OTHER_AREAS,THE_RESCUE);
     local SelbiFame = math.floor((player:getFameLevel(SANDORIA) + player:getFameLevel(BASTOK)) / 2); -- Selbina Fame
-    
+
     if (TheRescue == QUEST_AVAILABLE and SelbiFame >= 1) then
-        player:startEvent(0x0050); -- Start quest "The rescue"
+        player:startEvent(80); -- Start quest "The rescue"
     elseif (TheRescue == QUEST_ACCEPTED and player:hasKeyItem(TRADERS_SACK) == false) then
-        player:startEvent(0x0053); -- During quest "The rescue"
+        player:startEvent(83); -- During quest "The rescue"
     elseif (TheRescue == QUEST_ACCEPTED and player:hasKeyItem(TRADERS_SACK) == true) then
-        player:startEvent(0x0051); -- Finish quest "The rescue"
+        player:startEvent(81); -- Finish quest "The rescue"
     elseif (TheRescue == QUEST_COMPLETED) then
-        player:startEvent(0x0052); -- New standard dialog
+        player:startEvent(82); -- New standard dialog
     else
-        player:startEvent(0x0054); -- Standard dialog
+        player:startEvent(84); -- Standard dialog
     end
 end;
 
@@ -45,8 +45,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -54,11 +54,11 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
-    if (csid == 0x0050 and option == 70) then
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
+    if (csid == 80 and option == 70) then
         player:addQuest(OTHER_AREAS,THE_RESCUE);
-    elseif (csid == 0x0051) then
+    elseif (csid == 81) then
         player:completeQuest(OTHER_AREAS,THE_RESCUE);
         player:addTitle(HONORARY_CITIZEN_OF_SELBINA);
         player:delKeyItem(TRADERS_SACK);
@@ -71,6 +71,4 @@ function onEventFinish(player,csid,option)
         player:addFame(OTHER_AREAS,30);
     end
 end;
-
-
 

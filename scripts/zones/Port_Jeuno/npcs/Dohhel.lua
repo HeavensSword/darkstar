@@ -2,8 +2,8 @@
 --  Area: Port Jeuno
 --   NPC: Dohhel
 --  Type: Event Scene Replayer
--- @zone: 246
---  @pos -156.031 -2 6.051
+-- @zone 246
+-- !pos -156.031 -2 6.051
 --
 -- Auto-Script: Requires Verification (Verfied by Brawndo)
 -----------------------------------
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x272c);
+    player:startEvent(10028);
 end;
 
 -----------------------------------

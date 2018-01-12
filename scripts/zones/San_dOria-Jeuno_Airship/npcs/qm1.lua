@@ -3,7 +3,7 @@
 -- NPC:  ???
 -- Involved In Quest: The Stars Of Ifrit
 -- @zone 223
--- @pos 77 -9 -5 -13
+-- !pos 77 -9 -5 -13
 -----------------------------------
 package.loaded["scripts/zones/San_dOria-Jeuno_Airship/TextIDs"] = nil;
 -----------------------------------
@@ -41,8 +41,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
--- printf("CSID: %u",csid);
--- printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -50,6 +50,6 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
--- printf("CSID: %u",csid);
--- printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;

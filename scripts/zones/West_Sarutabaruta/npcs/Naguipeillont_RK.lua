@@ -2,7 +2,7 @@
 -- Area: West Sarutabaruta
 --  NPC: Naguipeillont, R.K.
 -- Type: Outpost Conquest Guards
--- @pos -11.322 -13.459 317.696 115
+-- !pos -11.322 -13.459 317.696 115
 -----------------------------------
 package.loaded["scripts/zones/West_Sarutabaruta/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/West_Sarutabaruta/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/West_Sarutabaruta/TextIDs");
 
-local guardnation = SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 3;        -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = SARUTABARUTA;
 local csid        = 0x7ffb;

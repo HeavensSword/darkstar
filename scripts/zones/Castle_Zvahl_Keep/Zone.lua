@@ -22,7 +22,7 @@ function onInitialize(zone)
     zone:registerRegion(6, -528,-74,84, -526,-73,89);   -- N porter on map 4
     zone:registerRegion(7, -528,-74,30, -526,-73,36);   -- S porter on map 4
 
-    UpdateTreasureSpawnPoint(17441084);
+    UpdateTreasureSpawnPoint(17441088);
 end;
 
 -----------------------------------
@@ -60,43 +60,43 @@ function onRegionEnter(player,region)
         ---------------------------------
         [1] = function (x)  --
         ---------------------------------
-            player:startEvent(0x0000); -- ports player to far NE corner
+            player:startEvent(0); -- ports player to far NE corner
         end,
 
         ---------------------------------
         [2] = function (x)  --
         ---------------------------------
-            player:startEvent(0x0002); -- ports player to
+            player:startEvent(2); -- ports player to
         end,
 
         ---------------------------------
         [3] = function (x)  --
         ---------------------------------
-            player:startEvent(0x0001); -- ports player to far SE corner
+            player:startEvent(1); -- ports player to far SE corner
         end,
 
         ---------------------------------
         [4] = function (x)  --
         ---------------------------------
-            player:startEvent(0x0001); -- ports player to far SE corner
+            player:startEvent(1); -- ports player to far SE corner
         end,
 
         ---------------------------------
         [5] = function (x)  --
         ---------------------------------
-            player:startEvent(0x0005); -- ports player to H-7 on map 4 (south or north part, randomly)
+            player:startEvent(5); -- ports player to H-7 on map 4 (south or north part, randomly)
         end,
 
         ---------------------------------
         [6] = function (x)  --
         ---------------------------------
-            player:startEvent(0x0006); -- ports player to position "A" on map 2
+            player:startEvent(6); -- ports player to position "A" on map 2
         end,
 
         ---------------------------------
         [7] = function (x)  --
         ---------------------------------
-            player:startEvent(0x0007); -- ports player to position G-8 on map 2
+            player:startEvent(7); -- ports player to position G-8 on map 2
         end,
 
         default = function (x)

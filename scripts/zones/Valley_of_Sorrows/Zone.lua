@@ -5,22 +5,21 @@
 -----------------------------------
 package.loaded["scripts/zones/Valley_of_Sorrows/TextIDs"] = nil;
 -----------------------------------
-
+require("scripts/zones/Valley_of_Sorrows/TextIDs");
+require("scripts/zones/Valley_of_Sorrows/MobIDs");
+require("scripts/globals/conquest");
 require("scripts/globals/settings");
 require("scripts/globals/zone");
-require("scripts/zones/Valley_of_Sorrows/TextIDs");
 
 -----------------------------------
 -- onInitialize
 -----------------------------------
 
 function onInitialize(zone)
-    local manuals = {17301591,17301592};
-
-    SetFieldManual(manuals);
-
-    -- Adamantoise
-    SetRespawnTime(17301537, 900, 10800);
+    if (LandKingSystem_NQ ~= 1) then
+        UpdateNMSpawnPoint(ADAMANTOISE);
+        GetMobByID(ADAMANTOISE):setRespawnTime(math.random(900, 10800));
+    end
 end;
 
 -----------------------------------

@@ -1,24 +1,16 @@
 -----------------------------------------
---    ID: 5336
---    Holy Bolt Quiver
---    When used, you will obtain one stack of Holy Bolts
------------------------------------------
-
------------------------------------------
--- OnItemCheck
+-- ID: 5336
+-- Holy Bolt Quiver
+-- When used, you will obtain one stack of Holy Bolts
 -----------------------------------------
 
 function onItemCheck(target)
-local result = 0;
+    local result = 0;
     if (target:getFreeSlotsCount() == 0) then
         result = 308;
     end
-return result;
+    return result;
 end;
-
------------------------------------------
--- OnItemUse
------------------------------------------
 
 function onItemUse(target)
     target:addItem(18153,99);

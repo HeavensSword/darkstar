@@ -2,8 +2,8 @@
 --  Area: Windurst Waters
 --   NPC: Olaky-Yayulaky
 --  Type: Item Depository
--- @zone: 238
---  @pos -61.247 -4.5 72.551
+-- @zone 238
+-- !pos -61.247 -4.5 72.551
 --
 -- Auto-Script: Requires Verification (Verfied By Brawndo)
 -----------------------------------
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x038e);
+    player:startEvent(910);
 end;
 
 -----------------------------------

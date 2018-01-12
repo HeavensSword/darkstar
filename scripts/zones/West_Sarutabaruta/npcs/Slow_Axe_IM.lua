@@ -2,7 +2,7 @@
 -- Area: West Sarutabaruta
 --  NPC: Slow Axe, I.M.
 -- Type: Border Conquest Guards
--- @pos 399.450 -25.858 727.545 115
+-- !pos 399.450 -25.858 727.545 115
 -----------------------------------
 package.loaded["scripts/zones/West_Sarutabaruta/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/West_Sarutabaruta/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/West_Sarutabaruta/TextIDs");
 
-local guardnation = BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 4;      -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = SARUTABARUTA;
 local csid        = 0x7ff8;

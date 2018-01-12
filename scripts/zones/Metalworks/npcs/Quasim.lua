@@ -1,7 +1,7 @@
 -----------------------------------
---    Area: Metalworks
---    NPC:  Quasim
---    Adventurer's Assistant
+-- Area: Metalworks
+-- NPC:  Quasim
+-- Adventurer's Assistant
 -------------------------------------
 package.loaded["scripts/zones/Metalworks/TextIDs"] = nil;
 -------------------------------------
@@ -21,7 +21,7 @@ end;
 -----------------------------------
  
 function onTrigger(player,npc) 
-    player:startEvent(0x02E6);
+    player:startEvent(742);
 end; 
 
 -----------------------------------
@@ -29,8 +29,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -38,9 +38,6 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
-
-
-

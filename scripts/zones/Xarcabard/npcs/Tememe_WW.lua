@@ -2,7 +2,7 @@
 -- Area: Xarcabard
 --  NPC: Tememe, W.W.
 -- Type: Border Conquest Guards
--- @pos -133.678 -22.517 112.224 112
+-- !pos -133.678 -22.517 112.224 112
 -----------------------------------
 package.loaded["scripts/zones/Xarcabard/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Xarcabard/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Xarcabard/TextIDs");
 
-local guardnation = WINDURST; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_WINDURST; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 4;        -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = VALDEAUNIA;
 local csid        = 0x7ff6;

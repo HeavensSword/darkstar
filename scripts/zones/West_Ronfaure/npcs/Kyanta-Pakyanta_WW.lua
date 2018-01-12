@@ -2,7 +2,7 @@
 -- Area: West Ronfaure
 --  NPC: Kyanta-Pakyanta, W.W.
 -- Type: Outpost Conquest Guards
--- @pos -450.571 -20.807 -219.970 100
+-- !pos -450.571 -20.807 -219.970 100
 -----------------------------------
 package.loaded["scripts/zones/West_Ronfaure/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/West_Ronfaure/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/West_Ronfaure/TextIDs");
 
-local guardnation = WINDURST; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_WINDURST; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 3;        -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = RONFAURE;
 local csid        = 0x7ff7;

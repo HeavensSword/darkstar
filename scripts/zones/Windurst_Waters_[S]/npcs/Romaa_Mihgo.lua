@@ -2,9 +2,9 @@
 --  Area: Windurst Waters (S)
 --   NPC: Romaa Mihgo
 --  Type: Standard NPC
--- @zone: 94
---  @pos -1.967 -3 -26.337
--- 
+-- @zone 94
+-- !pos -1.967 -3 -26.337
+--
 -- Auto-Script: Requires Verification (Verified by Brawndo)
 -----------------------------------
 package.loaded["scripts/zones/Windurst_Waters_[S]/TextIDs"] = nil;
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x000b);
+    player:startEvent(11);
 end;
 
 -----------------------------------

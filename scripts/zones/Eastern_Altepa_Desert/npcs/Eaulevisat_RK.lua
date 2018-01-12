@@ -2,7 +2,7 @@
 -- Area: Eastern Altepa desert
 --  NPC: Eaulevisat, R.K.
 -- Outpost Conquest Guards
--- @pos -257 8 -249 114
+-- !pos -257 8 -249 114
 ------------------------------------
 package.loaded["scripts/zones/Eastern_Altepa_Desert/TextIDs"] = nil;
 --------------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Eastern_Altepa_Desert/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Eastern_Altepa_Desert/TextIDs");
 
-local guardnation = SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 3;        -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = KUZOTZ;
 local csid        = 0x7ffb;

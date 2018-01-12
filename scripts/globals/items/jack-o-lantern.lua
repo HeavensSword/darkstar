@@ -7,14 +7,10 @@
 -- Accuracy 10
 -- Ranged Acc 10
 -- Evasion 10
--- Arcana Killer 5
+-- Arcana Killer 4
 -- Dark Res 25
 -----------------------------------------
-
 require("scripts/globals/status");
-
------------------------------------------
--- OnItemCheck
 -----------------------------------------
 
 function onItemCheck(target)
@@ -25,36 +21,24 @@ function onItemCheck(target)
     return result;
 end;
 
------------------------------------------
--- OnItemUse
------------------------------------------
-
 function onItemUse(target)
     target:addStatusEffect(EFFECT_FOOD,0,0,10800,4488);
 end;
 
------------------------------------
--- onEffectGain Action
------------------------------------
-
-function onEffectGain(target,effect)
+function onEffectGain(target, effect)
     target:addMod(MOD_CHR, -10);
     target:addMod(MOD_ACC, 10);
     target:addMod(MOD_RACC, 10);
     target:addMod(MOD_EVA, 10);
-    target:addMod(MOD_ARCANA_KILLER, 5);
+    target:addMod(MOD_ARCANA_KILLER, 4);
     target:addMod(MOD_DARKRES, 25);
 end;
 
------------------------------------------
--- onEffectLose Action
------------------------------------------
-
-function onEffectLose(target,effect)
+function onEffectLose(target, effect)
     target:delMod(MOD_CHR, -10);
     target:delMod(MOD_ACC, 10);
     target:delMod(MOD_RACC, 10);
     target:delMod(MOD_EVA, 10);
-    target:delMod(MOD_ARCANA_KILLER, 5);
+    target:delMod(MOD_ARCANA_KILLER, 4);
     target:delMod(MOD_DARKRES, 25);
 end;

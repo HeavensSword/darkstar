@@ -35,23 +35,6 @@ This file is part of DarkStar-server source code.
 #include "battleentity.h"
 #include "petentity.h"
 
-// Quest Areas
-
-enum QUESTAREA
-{
-    QUESTS_SANDORIA = 0,
-    QUESTS_BASTOK = 1,
-    QUESTS_WINDURST = 2,
-    QUESTS_JEUNO = 3,
-    QUESTS_OTHER = 4,
-    QUESTS_OUTLANDS = 5,
-    QUESTS_AHTURHGAN = 6,
-    QUESTS_CRYSTALWAR = 7,
-    QUESTS_ABYSSEA = 8,
-    QUESTS_ADOULIN = 9,
-    QUESTS_COALITION = 10
-};
-
 #define MAX_QUESTAREA	 11
 #define MAX_QUESTID     256
 #define MAX_MISSIONAREA	 15
@@ -146,7 +129,7 @@ struct UnlockedAttachments_t
 struct GearSetMod_t
 {
     uint8	modNameId;
-    uint16	modId;
+    Mod  	modId;
     uint16	modValue;
 };
 
@@ -159,7 +142,7 @@ struct GearSetMod_t
 class CBasicPacket;
 class CLinkshell;
 class CMeritPoints;
-class CRecastContainer;
+class CCharRecastContainer;
 class CLatentEffectContainer;
 class CTradeContainer;
 class CItemContainer;
@@ -183,7 +166,11 @@ public:
     keyitems_t				keys;							// таблица ключевых предметов
     event_t					m_event;						// структура для запуска событый
     skills_t				RealSkills;						// структура всех реальных умений персонажа, с точностью до 0.1 и не ограниченных уровнем
+
     nameflags_t				nameflags;						// флаги перед именем персонажа
+    nameflags_t             menuConfigFlags;                // These flags are used for MenuConfig packets. Some nameflags values are duplicated.
+    bool                    isNewPlayer();                  // Checks if new player bit is unset.
+
     profile_t				profile;						// профиль персонажа (все, что связывает города и персонажа)
     expChain_t				expChain;						// Exp Chains
     search_t				search;							// данные и комментарий, отображаемые в окне поиска
@@ -200,7 +187,7 @@ public:
     uint8					m_TitleList[94];				// список заслуженных завний
     uint8					m_Abilities[62];				// список текущих способностей
     uint8					m_LearnedAbilities[46];			// learnable abilities (corsair rolls)
-    std::bitset<48>         m_LearnedWeaponskills;          // learnable weaponskills
+    std::bitset<49>         m_LearnedWeaponskills;          // learnable weaponskills
     uint8					m_TraitList[16];				// список постянно активных способностей в виде битовой маски
     uint8					m_PetCommands[32];				// список доступных команд питомцу
     uint8					m_WeaponSkills[32];
@@ -210,6 +197,7 @@ public:
     campaignlog_t			m_campaignLog;					// список campaing миссий
     uint32					m_lastBcnmTimePrompt;			// the last message prompt in seconds
     PetInfo_t				petZoningInfo;					// used to repawn dragoons pets ect on zone
+    void					setPetZoningInfo();				// set pet zoning info (when zoning and logging out)
     void					resetPetZoningInfo();			// reset pet zoning info (when changing job ect)
     uint8					m_SetBlueSpells[20];			// The 0x200 offsetted blue magic spell IDs which the user has set. (1 byte per spell)
 
@@ -240,15 +228,13 @@ public:
     PacketList_t      getPacketList();              // returns a COPY of packet list
     size_t            getPacketCount();
     void              erasePackets(uint8 num);      // erase num elements from front of packet list
-    virtual void      HandleErrorMessage(std::unique_ptr<CMessageBasicPacket>&) override;
+    virtual void      HandleErrorMessage(std::unique_ptr<CBasicPacket>&) override;
 
     CLinkshell*       PLinkshell1;                  // linkshell, в которой общается персонаж
     CLinkshell*       PLinkshell2;                  // linkshell 2
     CTreasurePool*	  PTreasurePool;                // сокровища, добытые с монстров
     CMeritPoints*     PMeritPoints;                 //
     bool			  MeritMode;					//If true then player is meriting
-
-    CRecastContainer* PRecastContainer;             //
 
     CLatentEffectContainer* PLatentEffectContainer;
 
@@ -295,16 +281,18 @@ public:
     uint8			  m_GMlevel;                    // Level of the GM flag assigned to this character
     bool              m_isGMHidden;                 // GM Hidden flag to prevent player updates from being processed.
 
-    uint8             m_mentor;                     // Mentor flag status.
-    bool              m_isNewPlayer;                // New player flag..
+    bool              m_mentorUnlocked;
     uint32            m_moghouseID;
 
     int8			  getShieldSize();
 
     bool			  getWeaponSkillKill();
     void			  setWeaponSkillKill(bool isWeaponSkillKill);
+
     bool              getStyleLocked();
     void              setStyleLocked(bool isStyleLocked);
+    bool              getBlockingAid();
+    void              setBlockingAid(bool isBlockingAid);
 
     bool              m_EquipSwap;					// true if equipment was recently changed
     bool              m_EffectsChanged;
@@ -339,10 +327,10 @@ public:
     void Raise();
 
     /* State callbacks */
-    virtual bool CanAttack(CBattleEntity* PTarget, std::unique_ptr<CMessageBasicPacket>& errMsg) override;
+    virtual bool CanAttack(CBattleEntity* PTarget, std::unique_ptr<CBasicPacket>& errMsg) override;
     virtual bool OnAttack(CAttackState&, action_t&) override;
     virtual bool OnAttackError(CAttackState&) override;
-    virtual CBattleEntity* IsValidTarget(uint16 targid, uint16 validTargetFlags, std::unique_ptr<CMessageBasicPacket>& errMsg) override;
+    virtual CBattleEntity* IsValidTarget(uint16 targid, uint16 validTargetFlags, std::unique_ptr<CBasicPacket>& errMsg) override;
     virtual void OnChangeTarget(CBattleEntity* PNewTarget) override;
     virtual void OnDisengage(CAttackState&) override;
     virtual void OnCastFinished(CMagicState&, action_t&) override;
@@ -380,6 +368,7 @@ private:
 
     bool			m_isWeaponSkillKill;
     bool            m_isStyleLocked;
+    bool            m_isBlockingAid;
     bool			m_reloadParty;
 
     PacketList_t      PacketList;					// в этом списке хранятся все пакеты, предназначенные для отправки персонажу

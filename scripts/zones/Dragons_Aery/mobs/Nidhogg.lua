@@ -15,6 +15,16 @@ function onMobInitialize(mob)
 end;
 
 -----------------------------------
+-- onMobSpawn
+-----------------------------------
+
+function onMobSpawn(mob)
+    if (LandKingSystem_NQ > 0 or LandKingSystem_HQ > 0) then
+        GetNPCByID(17408033):setStatus(STATUS_DISAPPEAR);
+    end
+end;
+
+-----------------------------------
 -- onMobFight Action
 -----------------------------------
 
@@ -50,9 +60,9 @@ function onMobDespawn(mob)
     -- Set Nidhogg's Window Open Time
     if (LandKingSystem_HQ ~= 1) then
         local wait = 72 * 3600;
-        SetServerVariable("[POP]Nidhogg", os.time(t) + wait); -- 3 days
+        SetServerVariable("[POP]Nidhogg", os.time() + wait); -- 3 days
         if (LandKingSystem_HQ == 0) then -- Is time spawn only
-            DeterMob(mob:getID(), true);
+            DisallowRespawn(mob:getID(), true);
         end
     end
 
@@ -60,9 +70,12 @@ function onMobDespawn(mob)
     if (LandKingSystem_NQ ~= 1) then
         local Fafnir = mob:getID()-1;
         SetServerVariable("[PH]Nidhogg", 0);
-        DeterMob(Fafnir, false);
+        DisallowRespawn(Fafnir, false);
         UpdateNMSpawnPoint(Fafnir);
         GetMobByID(Fafnir):setRespawnTime(math.random(75600,86400));
     end
 
+    if (LandKingSystem_NQ > 0 or LandKingSystem_HQ > 0) then
+        GetNPCByID(17408033):updateNPCHideTime(FORCE_SPAWN_QM_RESET_TIME);
+    end
 end;

@@ -2,7 +2,7 @@
 -- Area: Labyrinth of Onzozo
 -- NPC:  ??? (qm2)
 -- Involved in Quest: Yomi Okuri
--- @pos -176 10 -60 213
+-- !pos -176 10 -60 213
 -----------------------------------
 package.loaded["scripts/zones/Labyrinth_of_Onzozo/TextIDs"] = nil;
 -----------------------------------
@@ -30,7 +30,7 @@ function onTrigger(player,npc)
             player:messageSpecial(KEYITEM_OBTAINED,YOMOTSU_FEATHER);
             player:setVar("yomiOkuriKilledNM",0);
         else
-            SpawnMob(17649860,300):updateClaim(player); -- Ubume
+            SpawnMob(17649860):updateClaim(player); -- Ubume
         end
     else
         player:messageSpecial(NOTHING_OUT_OF_ORDINARY);

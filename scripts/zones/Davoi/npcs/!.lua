@@ -2,7 +2,7 @@
 -- Area: Davoi
 -- NPC:  !
 -- Involved in Mission: The Davoi Report
--- @pos 164 0.1 -21 149
+-- !pos 164 0.1 -21 149
 -----------------------------------
 package.loaded["scripts/zones/Davoi/TextIDs"] = nil;
 -----------------------------------
@@ -23,9 +23,9 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    
+
     local CurrentMission = player:getCurrentMission(SANDORIA)
-    
+
     if (CurrentMission == THE_DAVOI_REPORT and player:getVar("MissionStatus") == 1) then
         player:setVar("MissionStatus",2);
         player:addKeyItem(LOST_DOCUMENT);
@@ -33,7 +33,7 @@ function onTrigger(player,npc)
     elseif (CurrentMission == INFILTRATE_DAVOI and player:getVar("MissionStatus") >= 6 and player:getVar("MissionStatus") <= 9) then
         local X = npc:getXPos();
         local Z = npc:getZPos();
-        
+
         if (X >= 292 and X <= 296 and Z >= -30 and Z <= -26 and player:hasKeyItem(EAST_BLOCK_CODE) == false) then
             player:setVar("MissionStatus",player:getVar("MissionStatus") + 1);
             player:addKeyItem(EAST_BLOCK_CODE);
@@ -52,7 +52,7 @@ function onTrigger(player,npc)
     else
         player:messageSpecial(YOU_SEE_NOTHING);
     end
-    
+
 end;
 
 -----------------------------------
@@ -60,8 +60,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -69,6 +69,6 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;

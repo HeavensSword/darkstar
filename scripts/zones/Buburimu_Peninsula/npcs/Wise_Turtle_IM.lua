@@ -2,7 +2,7 @@
 -- Area: Buburimu Peninsula
 --  NPC: Wise Turtle, I.M.
 -- Border Conquest Guards
--- @pos -599.903 -41.441 165.776 118
+-- !pos -599.903 -41.441 165.776 118
 -----------------------------------
 package.loaded["scripts/zones/Buburimu_Peninsula/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Buburimu_Peninsula/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Buburimu_Peninsula/TextIDs");
 
-local guardnation = BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 4;      -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = KOLSHUSHU;
 local csid        = 0x7ff8;

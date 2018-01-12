@@ -41,7 +41,7 @@ function onZoneIn(player,prevZone)
     local cs = -1;
     
     if (player:getCurrentMission(ZILART) == RETURN_TO_DELKFUTTS_TOWER and player:getVar("ZilartStatus") == 2) then
-        cs = 0x0000;
+        cs = 0;
     end
     
     return cs;
@@ -78,8 +78,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -87,12 +87,12 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
     
     if (csid == 8 and option == 1) then
         player:setPos(-370, -178, -40, 243, 0x9e);
-    elseif (csid == 0x0000) then
+    elseif (csid == 0) then
         player:setVar("ZilartStatus",3);
     end
     

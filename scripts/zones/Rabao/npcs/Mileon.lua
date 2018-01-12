@@ -2,9 +2,9 @@
 --  Area: Rabao
 --   NPC: Mileon
 --  Type: Lucky Roll Gambler
--- @zone: 247
---  @pos 26.080 8.201 65.297
--- 
+-- @zone 247
+-- !pos 26.080 8.201 65.297
+--
 -- Auto-Script: Requires Verification (Verified by Brawndo)
 -----------------------------------
 package.loaded["scripts/zones/Rabao/TextIDs"] = nil;
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x0064);
+    player:startEvent(100);
 end;
 
 -----------------------------------

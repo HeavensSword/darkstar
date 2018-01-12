@@ -1,13 +1,9 @@
 -----------------------------------------
-
 require("scripts/globals/status");
-
------------------------------------------
--- OnItemCheck
 -----------------------------------------
 
 function onItemCheck(target)
-    local encumbrance = target:getStatusEffect(EFFECT_ENCUMBRANCE_I)
+    local encumbrance = target:getStatusEffect(EFFECT_ENCUMBRANCE_I);
     if (encumbrance) then
         local power = encumbrance:getPower()
         if bit.band(power, 0x0020) > 0 then
@@ -16,10 +12,6 @@ function onItemCheck(target)
     end
     return -1
 end;
-
------------------------------------------
--- OnItemUse
------------------------------------------
 
 function onItemUse(target)
     local encumbrance = target:getStatusEffect(EFFECT_ENCUMBRANCE_I)

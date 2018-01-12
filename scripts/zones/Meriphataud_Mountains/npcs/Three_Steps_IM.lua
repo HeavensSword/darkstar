@@ -2,7 +2,7 @@
 -- Area: Meriphataud Mountains
 --  NPC: Three Steps, I.M.
 -- Type: Border Conquest Guards
--- @pos -120.393 -25.822 -592.604 119
+-- !pos -120.393 -25.822 -592.604 119
 -----------------------------------
 package.loaded["scripts/zones/Meriphataud_Mountains/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Meriphataud_Mountains/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Meriphataud_Mountains/TextIDs");
 
-local guardnation = BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 4;      -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = ARAGONEU;
 local csid        = 0x7ff8;

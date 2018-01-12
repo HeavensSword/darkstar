@@ -2,7 +2,7 @@
 -- Area: Eastern Altepa Desert
 --  NPC: Lindgard, I.M.
 -- Outpost Conquest Guards
--- @pos -258.041 7.473 -254.527 114
+-- !pos -258.041 7.473 -254.527 114
 -----------------------------------
 package.loaded["scripts/zones/Eastern_Altepa_Desert/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Eastern_Altepa_Desert/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Eastern_Altepa_Desert/TextIDs");
 
-local guardnation = BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 3;      -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = KUZOTZ;
 local csid        = 0x7ff9;

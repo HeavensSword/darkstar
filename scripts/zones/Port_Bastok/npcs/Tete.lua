@@ -24,9 +24,9 @@ end;
 function onTrigger(player,npc)
     
     if (player:getQuestStatus(BASTOK,THE_WISDOM_OF_ELDERS) == QUEST_ACCEPTED) then
-        player:startEvent(0x00af);
+        player:startEvent(175);
     else
-        player:startEvent(0x0023);
+        player:startEvent(35);
     end
     
 end; 
@@ -36,8 +36,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -45,10 +45,10 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 
-    if (csid == 0x00af) then
+    if (csid == 175) then
         player:setVar("TheWisdomVar",2);
     end
     

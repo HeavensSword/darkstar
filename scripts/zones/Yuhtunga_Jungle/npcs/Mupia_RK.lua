@@ -2,7 +2,7 @@
 -- Area: Yuhtunga Jungle
 --  NPC: Mupia, R.K.
 -- Border Conquest Guards
--- @pos -241.334 -1 478.602 123
+-- !pos -241.334 -1 478.602 123
 -----------------------------------
 package.loaded["scripts/zones/Yuhtunga_Jungle/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Yuhtunga_Jungle/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Yuhtunga_Jungle/TextIDs");
 
-local guardnation = SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 4;        -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = ELSHIMOLOWLANDS;
 local csid        = 0x7ffa;

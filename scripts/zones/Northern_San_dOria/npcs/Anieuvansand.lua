@@ -2,8 +2,8 @@
 --  Area: Northern San d'Oria
 --  NPC: Anieuvansand
 --  Type: Standard Info NPC
---  @zone: 231
---  @pos -18.608 -0.199 83.911
+--  @zone 231
+-- !pos -18.608 -0.199 83.911
 --
 -----------------------------------
 
@@ -19,7 +19,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x0299);
+    player:startEvent(665);
 end;
 
 -----------------------------------

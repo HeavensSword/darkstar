@@ -2,8 +2,8 @@
 --  Area: Windurst Woods
 --   NPC: Aja-Panja
 --  Type: Standard NPC
--- @zone: 241
---  @pos -7.251 -6.55 -134.127
+-- @zone 241
+-- !pos -7.251 -6.55 -134.127
 --
 -- Auto-Script: Requires Verification (Verfied by Brawndo)
 -----------------------------------
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x00f7);
+    player:startEvent(247);
 end;
 
 -----------------------------------

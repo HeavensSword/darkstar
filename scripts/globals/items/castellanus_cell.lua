@@ -1,9 +1,5 @@
 -----------------------------------------
-
 require("scripts/globals/status");
-
------------------------------------------
--- OnItemCheck
 -----------------------------------------
 
 function onItemCheck(target)
@@ -14,12 +10,8 @@ function onItemCheck(target)
             return 0;
         end
     end
-    return -1
+    return -1;
 end;
-
------------------------------------------
--- OnItemUse
------------------------------------------
 
 function onItemUse(target)
     local encumbrance = target:getStatusEffect(EFFECT_ENCUMBRANCE_I)

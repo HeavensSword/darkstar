@@ -2,7 +2,7 @@
 -- Area: Lufaise Meadows
 --  NPC: Teldo-Moroldo, W.W.
 -- Outpost Conquest Guards
--- @pos -542.418 -7.124 -53.521 24
+-- !pos -542.418 -7.124 -53.521 24
 -----------------------------------
 package.loaded["scripts/zones/Lufaise_Meadows/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Lufaise_Meadows/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Lufaise_Meadows/TextIDs");
 
-local guardnation = WINDURST; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_WINDURST; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 3;        -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = TAVNAZIANARCH;
 local csid        = 0x7ff7;

@@ -6,7 +6,7 @@
 -- Multi-Race Effects
 -- Galka
 -- Strength 3
--- Intelligence -3
+-- Intelligence -1
 -- Attack % 25
 -- Attack Cap 30
 -- Ranged ATT % 25
@@ -18,24 +18,16 @@
 -- Attack 9
 -- Ranged ATT  9
 -----------------------------------------
-
 require("scripts/globals/status");
-
------------------------------------------
--- OnItemCheck
 -----------------------------------------
 
 function onItemCheck(target)
-local result = 0;
+    local result = 0;
     if (target:hasStatusEffect(EFFECT_FOOD) == true or target:hasStatusEffect(EFFECT_FIELD_SUPPORT_FOOD) == true) then
         result = 246;
     end
-return result;
+    return result;
 end;
-
------------------------------------------
--- OnItemUse
------------------------------------------
 
 function onItemUse(target)
     target:addStatusEffect(EFFECT_FOOD,0,0,1800,4395);
@@ -61,16 +53,12 @@ function onEffectGain(target,effect)
     end
 end;
 
------------------------------------------
--- onEffectLose Action
------------------------------------------
-
-function onEffectLose(target,effect)
+function onEffectLose(target, effect)
     if (target:getRace() ~= 8) then
-        target:addMod(MOD_STR, 3);
-        target:addMod(MOD_INT, -4);
-        target:addMod(MOD_ATT, 9);
-        target:addMod(MOD_RATT, 9);
+        target:delMod(MOD_STR, 3);
+        target:delMod(MOD_INT, -4);
+        target:delMod(MOD_ATT, 9);
+        target:delMod(MOD_RATT, 9);
     else
         target:delMod(MOD_STR, 3);
         target:delMod(MOD_INT, -1);

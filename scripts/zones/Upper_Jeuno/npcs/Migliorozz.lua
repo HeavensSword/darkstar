@@ -2,8 +2,8 @@
 --  Area: Upper Jeuno
 --   NPC: Migliorozz
 --  Type: Standard NPC
--- @zone: 244
---  @pos -37.760 -2.499 12.924
+-- @zone 244
+-- !pos -37.760 -2.499 12.924
 --
 -- Auto-Script: Requires Verification (Verfied by Brawndo)
 -----------------------------------
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x272a);
+    player:startEvent(10026);
 end;
 
 -----------------------------------

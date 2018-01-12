@@ -4,7 +4,7 @@
 -- Standard Merchant NPC
 -- Involved in Quest: Borghertz's Hands (1st quest only)
 -- @zone 244
--- @pos -5 1 48
+-- !pos -5 1 48
 -----------------------------------
 package.loaded["scripts/zones/Upper_Jeuno/TextIDs"] = nil;
 -----------------------------------
@@ -17,7 +17,7 @@ require("scripts/zones/Upper_Jeuno/TextIDs");
 -----------------------------------
 
 function onTrade(player,npc,trade)
-end; 
+end;
 
 -----------------------------------
 -- onTrigger Action
@@ -26,7 +26,7 @@ end;
 function onTrigger(player,npc)
 
     if (player:getVar("BorghertzHandsFirstTime") == 1) then
-        player:startEvent(0x0018);
+        player:startEvent(24);
         player:setVar("BorghertzHandsFirstTime",2);
     else
         player:showText(npc,DEADLYMINNOW_SHOP_DIALOG);
@@ -42,19 +42,19 @@ function onTrigger(player,npc)
                  0x3180,23846,    --Gauntlets
                  0x318A,35673}    --Mufflers
 
-         
+
         showShop(player, STATIC, stock);
     end
-    
-end; 
+
+end;
 
 -----------------------------------
 -- onEventUpdate
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -62,9 +62,7 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
-
-
 

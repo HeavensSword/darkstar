@@ -28,7 +28,6 @@ This file is part of DarkStar-server source code.
 #include "../../entities/charentity.h"
 
 #include "../../item_container.h"
-#include "../../recast_container.h"
 #include "../../status_effect_container.h"
 #include "../../universal_container.h"
 
@@ -39,15 +38,14 @@ This file is part of DarkStar-server source code.
 
 #include "../../utils/battleutils.h"
 #include "../../utils/charutils.h"
-#include "../../../common/utils.h"
 
 
 CItemState::CItemState(CCharEntity* PEntity, uint16 targid, uint8 loc, uint8 slotid) :
     CState(PEntity, targid),
     m_PEntity(PEntity),
+    m_PItem(nullptr),
     m_location(loc),
-    m_slot(slotid),
-    m_PItem(nullptr)
+    m_slot(slotid)
 {
     auto PItem = dynamic_cast<CItemUsable*>(m_PEntity->getStorage(loc)->GetItem(slotid));
     m_PItem = PItem;
@@ -87,7 +85,7 @@ CItemState::CItemState(CCharEntity* PEntity, uint16 targid, uint8 loc, uint8 slo
         throw CStateInitException(std::move(m_errorMsg));
     }
 
-    auto error = luautils::OnItemCheck(PTarget, m_PItem);
+    auto error = luautils::OnItemCheck(PTarget, m_PItem, 0, m_PEntity);
 
     if (error || m_PEntity->StatusEffectContainer->HasPreventActionEffect())
     {
@@ -99,14 +97,14 @@ CItemState::CItemState(CCharEntity* PEntity, uint16 targid, uint8 loc, uint8 slo
         }
         else
         {
-            throw CStateInitException(std::make_unique<CMessageBasicPacket>(m_PEntity, m_PEntity, param, 0, error == -1 ? 0 : error));
+            throw CStateInitException(std::make_unique<CMessageBasicPacket>(m_PEntity, PTarget ? PTarget : m_PEntity, param, 0, error == -1 ? 0 : error));
         }
     }
 
     m_PEntity->UContainer->SetType(UCONTAINER_USEITEM);
     m_PEntity->UContainer->SetItem(0, m_PItem);
 
-    UpdateTarget(m_targid);
+    CState::UpdateTarget(m_targid);
 
     m_startPos = m_PEntity->loc.p;
     m_castTime = std::chrono::milliseconds(m_PItem->getActivationTime());
@@ -143,7 +141,7 @@ bool CItemState::Update(time_point tick)
     {
         m_interrupted = false;
         m_interruptable = false;
-        auto PTarget = m_PEntity->IsValidTarget(m_targid, m_PItem->getValidTarget(), m_errorMsg);
+        UpdateTarget(m_PEntity->IsValidTarget(m_targid, m_PItem->getValidTarget(), m_errorMsg));
 
         action_t action;
 
@@ -260,6 +258,6 @@ void CItemState::FinishItem(action_t& action)
 
 bool CItemState::HasMoved()
 {
-    return floorf(m_startPos.x * 10 + 0.5) / 10 != floorf(m_PEntity->loc.p.x * 10 + 0.5) / 10 ||
-        floorf(m_startPos.z * 10 + 0.5) / 10 != floorf(m_PEntity->loc.p.z * 10 + 0.5) / 10;
+    return floorf(m_startPos.x * 10 + 0.5f) / 10 != floorf(m_PEntity->loc.p.x * 10 + 0.5f) / 10 ||
+        floorf(m_startPos.z * 10 + 0.5f) / 10 != floorf(m_PEntity->loc.p.z * 10 + 0.5f) / 10;
 }

@@ -2,8 +2,8 @@
 --  Area: Windurst Walls
 --   NPC: Tsuaora-Tsuora
 --  Type: Standard NPC
--- @zone: 239
---  @pos 71.489 -3.418 -67.809
+-- @zone 239
+-- !pos 71.489 -3.418 -67.809
 --
 -- Auto-Script: Requires Verification (Verfied by Brawndo)
 -----------------------------------
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x002a);
+    player:startEvent(42);
 end;
 
 -----------------------------------

@@ -2,7 +2,7 @@
 -- Area: Yhoator Jungle
 --  NPC: Ghantata, W.W.
 -- Border Conquest Guards
--- @pos -84.113 -0.449 224.902 124
+-- !pos -84.113 -0.449 224.902 124
 -----------------------------------
 package.loaded["scripts/zones/Yhoator_Jungle/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Yhoator_Jungle/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Yhoator_Jungle/TextIDs");
 
-local guardnation = WINDURST; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_WINDURST; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 4;        -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = ELSHIMOUPLANDS;
 local csid        = 0x7ff6;

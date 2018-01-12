@@ -2,13 +2,23 @@
 -- Area: Behemoth's Dominion
 --  NPC: qm2 (???)
 -- Spawns Behemoth or King Behemoth
--- @pos -267 -19 74 127
+-- !pos -267 -19 74 127
 -----------------------------------
 package.loaded["scripts/zones/Behemoths_Dominion/TextIDs"] = nil;
 -----------------------------------
 require("scripts/zones/Behemoths_Dominion/TextIDs");
 require("scripts/globals/settings");
 require("scripts/globals/status");
+
+-----------------------------------
+-- onSpawn Action
+-----------------------------------
+
+function onSpawn(npc)
+    if (LandKingSystem_NQ < 1 and LandKingSystem_HQ < 1) then
+        npc:setStatus(STATUS_DISAPPEAR);
+    end
+end;
 
 -----------------------------------
 -- onTrade Action
@@ -25,12 +35,14 @@ function onTrade(player,npc,trade)
             if (LandKingSystem_NQ ~= 0) then
                 player:tradeComplete();
                 SpawnMob(17297440):updateClaim(player);
+                npc:setStatus(STATUS_DISAPPEAR);
             end
         -- Trade Savory Shank
         elseif (trade:hasItemQty(3342,1) and trade:getItemCount() == 1) then
             if (LandKingSystem_HQ ~= 0) then
                 player:tradeComplete();
                 SpawnMob(17297441):updateClaim(player);
+                npc:setStatus(STATUS_DISAPPEAR);
             end
         end
     end

@@ -20,7 +20,7 @@ end;
 
 function onTrigger(player,npc)
 
-    player:startEvent(0x0066)
+    player:startEvent(102)
 
 end;
 
@@ -28,8 +28,11 @@ end;
 -- onEventFinish
 -----------------------------------
 
+function onEventUpdate(player,csid,option)
+end
+
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 
 end;

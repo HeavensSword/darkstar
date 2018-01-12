@@ -1,15 +1,14 @@
 -----------------------------------
 -- Area: Beadeaux
--- NPC:  The Afflictor
+--  NPC: The Afflictor
 -- @zone 147
--- @pos <many>
+-- !pos <many.. Todo: list them?>
 -----------------------------------
 package.loaded["scripts/zones/Beadeaux/TextIDs"] = nil;
 -----------------------------------
-
 require("scripts/zones/Beadeaux/TextIDs");
-require("scripts/globals/quests");
 require("scripts/globals/settings");
+require("scripts/globals/quests");
 
 -----------------------------------
 -- onTrade Action
@@ -23,19 +22,15 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    
-    if (player:getQuestStatus(BASTOK,THE_CURSE_COLLECTOR) == QUEST_ACCEPTED and player:getVar("cCollectCurse") == 0) then 
-        player:setVar("cCollectCurse",1);
-    end
-
 end;
+
 -----------------------------------
 -- onEventUpdate
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -43,6 +38,6 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;

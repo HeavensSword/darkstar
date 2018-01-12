@@ -25,11 +25,11 @@ function onMobRoam(mob)
     local Heliodromos_Despawn = GetServerVariable("Heliodromos_Despawn");
 
     if (Heliodromos_Despawn > 0 and Heliodromos_Despawn <= os.time()) then
-        for i=1, table.getn(Heliodromos_Table), 1 do
+        for i=1, #Heliodromos_Table, 1 do
             if (Heliodromos_PH_Table[i] ~= nil) then
                 if (GetMobAction(Heliodromos_PH_Table[i]) == 0) then
-                    DeterMob(Heliodromos_Table[i], true);
-                    DeterMob(Heliodromos_PH_Table[i], false);
+                    DisallowRespawn(Heliodromos_Table[i], true);
+                    DisallowRespawn(Heliodromos_PH_Table[i], false);
                     DespawnMob(Heliodromos_Table[i]);
                     SpawnMob(Heliodromos_PH_Table[i], "", GetMobRespawnTime(Heliodromos_PH_Table[i]));
                 end
@@ -37,6 +37,13 @@ function onMobRoam(mob)
         end
     end
 
+end;
+
+-----------------------------------
+-- onMobDeath
+-----------------------------------
+
+function onMobDeath(mob, player, isKiller)
 end;
 
 -----------------------------------
@@ -59,12 +66,12 @@ function onMobDespawn(mob)
         16900109
     };
 
-    for i = 1, table.getn(Heliodromos_Table), 1 do
+    for i = 1, #Heliodromos_Table, 1 do
         if (Heliodromos_Table[i] ~= nil) then
             if (Heliodromos == Heliodromos_Table[i]) then
                 SetServerVariable("Heliodromos_ToD", (os.time() + math.random((43200), (54000))));
-                DeterMob(Heliodromos_PH_Table[i], false);
-                DeterMob(Heliodromos_Table[i], true);
+                DisallowRespawn(Heliodromos_PH_Table[i], false);
+                DisallowRespawn(Heliodromos_Table[i], true);
                 SpawnMob(Heliodromos_PH_Table[i], "", GetMobRespawnTime(Heliodromos_PH_Table[i]));
             end
         end

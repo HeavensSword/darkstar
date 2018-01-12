@@ -2,8 +2,8 @@
 --  Area: Windurst Woods
 --   NPC: Abby Jalunshi
 --  Type: Moghouse Renter
--- @zone: 241
---  @pos -101.895 -5 36.172
+-- @zone 241
+-- !pos -101.895 -5 36.172
 --
 -- Auto-Script: Requires Verification (Verfied By Brawndo)
 -----------------------------------
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x031e);
+    player:startEvent(798);
 end;
 
 -----------------------------------

@@ -43,11 +43,11 @@ end;
 
 function onTrigger(player,npc)
     if (player:getVar("BathedInScent") == 1) then
-        player:startEvent(0x00A3); -- scent from Blue Rafflesias
-        npc:wait(-1);
+        player:startEvent(163); -- scent from Blue Rafflesias
+        npc:wait();
     else
-    player:startEvent(0x00BE);
-    npc:wait(-1);
+    player:startEvent(190);
+    npc:wait();
     end
 end;
 -----------------------------------
@@ -55,8 +55,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -64,10 +64,8 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option,npc)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
     npc:wait(0);
 end;
-
-
 

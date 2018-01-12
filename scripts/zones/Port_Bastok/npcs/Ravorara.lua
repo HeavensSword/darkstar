@@ -2,8 +2,8 @@
 --  Area: Port Bastok
 --   NPC: Ravorara
 --  Type: Quest Giver
--- @zone: 236
---  @pos -151.062 -7 -7.243
+-- @zone 236
+-- !pos -151.062 -7 -7.243
 --
 -- Auto-Script: Requires Verification (Verified by Brawndo)
 -----------------------------------
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x0136);
+    player:startEvent(310);
 end;
 
 -----------------------------------

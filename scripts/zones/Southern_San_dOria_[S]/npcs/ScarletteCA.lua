@@ -2,12 +2,10 @@
 -- Area: Southern SandOria [S]
 -- NPC: Scarlette C.A
 -- @zone 80
--- @pos -27 2 -29
+-- !pos -27 2 -29
 -----------------------------------
 package.loaded["scripts/zones/Southern_San_dOria_[S]/TextIDs"] = nil;
 require("scripts/zones/Southern_San_dOria_[S]/TextIDs");
-
-
 -----------------------------------
 -- onTrade Action
 -----------------------------------
@@ -20,7 +18,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-player:startEvent(0x01CB);
+player:startEvent(459);
 end;
 
 -----------------------------------
@@ -28,8 +26,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -37,6 +35,6 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;

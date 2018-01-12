@@ -2,9 +2,9 @@
 --  Area: Windurst Waters (S)
 --   NPC: Kleh Engyumoh
 --  Type: Standard NPC
--- @zone: 94
---  @pos -54.962 -4.5 57.701
--- 
+-- @zone 94
+-- !pos -54.962 -4.5 57.701
+--
 -- Auto-Script: Requires Verification (Verified by Brawndo)
 -----------------------------------
 package.loaded["scripts/zones/Windurst_Waters_[S]/TextIDs"] = nil;
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x01af);
+    player:startEvent(431);
 end;
 
 -----------------------------------

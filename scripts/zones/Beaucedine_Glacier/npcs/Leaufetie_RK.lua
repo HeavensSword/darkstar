@@ -2,7 +2,7 @@
 -- Area: Beaucedine Glacier
 --  NPC: Leaufetie, R.K.
 -- Type: Conquest Overseer
--- @pos -227.956 -81.475 260.442 111
+-- !pos -227.956 -81.475 260.442 111
 -----------------------------------
 package.loaded["scripts/zones/Beaucedine_Glacier/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Beaucedine_Glacier/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Beaucedine_Glacier/TextIDs");
 
-local guardnation = SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 4;        -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = FAUREGANDI;
 local csid        = 0x7ffa;

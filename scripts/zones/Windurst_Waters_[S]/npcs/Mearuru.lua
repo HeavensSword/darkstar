@@ -2,9 +2,9 @@
 --  Area: Windurst Waters (S)
 --   NPC: Mearuru
 --  Type: Standard NPC
--- @zone: 94
---  @pos 153.798 -1 153.712
--- 
+-- @zone 94
+-- !pos 153.798 -1 153.712
+--
 -- Auto-Script: Requires Verification (Verified by Brawndo)
 -----------------------------------
 package.loaded["scripts/zones/Windurst_Waters_[S]/TextIDs"] = nil;
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x01a2);
+    player:startEvent(418);
 end;
 
 -----------------------------------

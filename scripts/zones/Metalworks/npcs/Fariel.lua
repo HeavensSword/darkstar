@@ -61,8 +61,8 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x02C2);
-    npc:wait(-1);
+    player:startEvent(706);
+    npc:wait();
 end; 
 
 -----------------------------------
@@ -70,8 +70,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -79,10 +79,8 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option,npc)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
     npc:wait(0);
 end;
-
-
 

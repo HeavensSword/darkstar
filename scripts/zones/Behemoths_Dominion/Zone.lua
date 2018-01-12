@@ -5,69 +5,67 @@
 -----------------------------------
 package.loaded["scripts/zones/Behemoths_Dominion/TextIDs"] = nil;
 -----------------------------------
-
+require("scripts/zones/Behemoths_Dominion/TextIDs");
+require("scripts/zones/Behemoths_Dominion/MobIDs");
 require("scripts/globals/settings");
 require("scripts/globals/zone");
-require("scripts/zones/Behemoths_Dominion/TextIDs");
 
 -----------------------------------
 -- onInitialize
 -----------------------------------
 
 function onInitialize(zone)
-    local manuals = {17297490};
-    
-    SetFieldManual(manuals);
-    
-    -- Behemoth
-    SetRespawnTime(17297440, 900, 10800);
+    if (LandKingSystem_NQ ~= 1) then
+        UpdateNMSpawnPoint(BEHEMOTH);
+        GetMobByID(BEHEMOTH):setRespawnTime(math.random(900, 10800));
+    end
 end;
 
------------------------------------        
--- onConquestUpdate        
------------------------------------        
+-----------------------------------
+-- onConquestUpdate
+-----------------------------------
 
 function onConquestUpdate(zone, updatetype)
     local players = zone:getPlayers();
-    
+
     for name, player in pairs(players) do
         conquestUpdate(zone, player, updatetype, CONQUEST_BASE);
     end
 end;
 
------------------------------------        
--- onZoneIn        
------------------------------------        
+-----------------------------------
+-- onZoneIn
+-----------------------------------
 
-function onZoneIn(player,prevZone)        
-    local cs = -1;    
-    if ((player:getXPos() == 0) and (player:getYPos() == 0) and (player:getZPos() == 0)) then    
+function onZoneIn(player,prevZone)
+    local cs = -1;
+    if ((player:getXPos() == 0) and (player:getYPos() == 0) and (player:getZPos() == 0)) then
         player:setPos(358.134,24.806,-60.001,123);
-    end    
-    return cs;    
-end;        
+    end
+    return cs;
+end;
 
------------------------------------        
--- onRegionEnter        
------------------------------------        
+-----------------------------------
+-- onRegionEnter
+-----------------------------------
 
-function onRegionEnter(player,region)    
-end;    
+function onRegionEnter(player,region)
+end;
 
------------------------------------    
--- onEventUpdate    
------------------------------------    
+-----------------------------------
+-- onEventUpdate
+-----------------------------------
 
-function onEventUpdate(player,csid,option)    
+function onEventUpdate(player,csid,option)
     --printf("CSID: %u",csid);
     --printf("RESULT: %u",option);
-end;    
+end;
 
------------------------------------    
--- onEventFinish    
------------------------------------    
+-----------------------------------
+-- onEventFinish
+-----------------------------------
 
-function onEventFinish(player,csid,option)    
+function onEventFinish(player,csid,option)
     --printf("CSID: %u",csid);
     --printf("RESULT: %u",option);
-end;    
+end;

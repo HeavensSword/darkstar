@@ -1,7 +1,7 @@
 -----------------------------------
---    Area:  Zeruhn Mines
---    NPC:   Lasthenes
---    Notes: Opens Gate
+-- Area:  Zeruhn Mines
+-- NPC:   Lasthenes
+-- Notes: Opens Gate
 -----------------------------------
 
 require("scripts/globals/settings");
@@ -19,9 +19,9 @@ end;
 
 function onTrigger(player,npc)
     if (player:getXPos() > -79.5 ) then
-        player:startEvent(0x00B4);
+        player:startEvent(180);
     else
-        player:startEvent(0x00B5);
+        player:startEvent(181);
     end
 end;
 
@@ -30,8 +30,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -39,6 +39,6 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;

@@ -2,8 +2,8 @@
 --  Area: Lower Jeuno
 --   NPC: Geuhbe
 --  Type: Event Scene Replayer
--- @zone: 245
---  @pos -74.309 -1 -114.174
+-- @zone 245
+-- !pos -74.309 -1 -114.174
 --
 -- Auto-Script: Requires Verification (Verfied by Brawndo)
 -----------------------------------
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x2731);
+    player:startEvent(10033);
 end;
 
 -----------------------------------

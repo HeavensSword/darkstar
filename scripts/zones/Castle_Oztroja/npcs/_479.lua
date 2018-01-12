@@ -2,7 +2,7 @@
 -- Area:  Castle Oztroja
 -- NPC:   _479 (Brass Door)
 -- Involved in Mission "Saintly Invitation"
--- @pos -99 -59 84 151
+-- !pos -99 -59 84 151
 -----------------------------------
 package.loaded["scripts/zones/Castle_Oztroja/TextIDs"] = nil;
 -----------------------------------
@@ -23,7 +23,7 @@ function onTrade(player,npc,trade)
             if (player:getZPos() >= 80 and player:getZPos() < 86) then
                 npc:openDoor(2.5);
                 player:tradeComplete();
-            else 
+            else
                 player:messageSpecial(ITS_LOCKED);
             end
         end
@@ -40,8 +40,8 @@ function onTrigger(player,npc)
     if (npc:getAnimation() == 9) then
         player:messageSpecial(ITS_LOCKED);
         return 1;
-    end    
-    
+    end
+
 end;
 
 -----------------------------------
@@ -49,8 +49,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -58,6 +58,6 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;

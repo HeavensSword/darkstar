@@ -23,7 +23,7 @@ BucketsOfGold = player:getQuestStatus(BASTOK,BUCKETS_OF_GOLD);
         RustyBucket = trade:hasItemQty(90,5);
 
         if (RustyBucket == true and count == 5) then
-            player:startEvent(0x0110);
+            player:startEvent(272);
         end
     end
     
@@ -38,9 +38,9 @@ function onTrigger(player,npc)
 BucketsOfGold = player:getQuestStatus(BASTOK,BUCKETS_OF_GOLD);
 
     if (BucketsOfGold == QUEST_AVAILABLE) then
-        player:startEvent(0x010f);
+        player:startEvent(271);
     else
-        player:startEvent(0x010e);
+        player:startEvent(270);
     end
     
 end;
@@ -50,8 +50,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID2: %u",csid);
---printf("RESULT2: %u",option);
+    -- printf("CSID2: %u",csid);
+    -- printf("RESULT2: %u",option);
 
 end;
 
@@ -63,9 +63,9 @@ function onEventFinish(player,csid,option)
     -- printf("CSID: %u",csid);
     -- printf("RESULT: %u",option);
 
-    if (csid == 0x010f and option == 0) then
+    if (csid == 271 and option == 0) then
         player:addQuest(BASTOK,BUCKETS_OF_GOLD);            
-    elseif (csid == 0x0110) then
+    elseif (csid == 272) then
         BucketsOfGold = player:getQuestStatus(BASTOK,BUCKETS_OF_GOLD);
         
         if (BucketsOfGold == QUEST_ACCEPTED) then
@@ -82,7 +82,5 @@ function onEventFinish(player,csid,option)
     end
 
 end;
-
-
 
 

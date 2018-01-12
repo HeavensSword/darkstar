@@ -30,33 +30,32 @@
 #include "../item_container.h"
 #include "../items/item_weapon.h"
 
-CCharEmotionPacket::CCharEmotionPacket(CCharEntity* PChar, uint8* buff) 
+CCharEmotionPacket::CCharEmotionPacket(CCharEntity* PChar, uint8* buff)
 {
 	this->type = 0x5a;
-	this->size = 0x0c;
-	
-	WBUFL(data,(0x04)) = PChar->id;
-	WBUFW(data,(0x0C)) = PChar->targid;
+	this->size = 0x1C;								// new size to match retail packet
 
-	
-	WBUFL(data,(0x08)) = RBUFL(buff,(0x04));
-	WBUFW(data,(0x0E)) = RBUFW(buff,(0x08));
+	ref<uint32>(0x04) = PChar->id;					// player Id
+	ref<uint32>(0x08) = ::ref<uint32>(buff, 0x04);		// target Id
+	ref<uint16>(0x0C) = PChar->targid;				// player's zone charList index
+	ref<uint16>(0x0E) = ::ref<uint16>(buff, 0x08);		// target's zone mobList index (?)
 
-	uint8 emoteID = RBUFB(buff,(0x0A));
+	uint8 emoteID = ::ref<uint8>(buff, 0x0A);
+	uint8 motion = ::ref<uint8>(buff, 0x0B);
 
-	if (emoteID == 0x4A) {
-		uint8 offset = RBUFB(buff,(0x0C)) - 0x1F;
-
-		WBUFB(data,(0x10)) = emoteID + offset; 
-		WBUFB(data,(0x12)) = offset; 
-	}else{
-		WBUFB(data,(0x10)) = emoteID;
-
+	if (emoteID == 0x4A) { 							// [jobemote] sends job id as extra value
+		uint8 offset = ::ref<uint8>(buff, 0x0C) - 0x1F;
+		ref<uint8>(0x10) = emoteID + offset;		// emote Id
+		ref<uint8>(0x12) = offset;				// job Id
+	} else if (emoteID == 0x2B) { 					// [hurray] sends weapon as extra value
+		ref<uint8>(0x10) = emoteID;				// emote Id
 		CItem * weapon = PChar->getStorage(LOC_INVENTORY)->GetItem(PChar->equip[SLOT_MAIN]);
 		if (weapon != nullptr && weapon->getID() != 0xFFFF) {
-			WBUFW(data,(0x12)) = weapon->getID();
+			ref<uint16>(0x12) = weapon->getID();	// main weapon Id
 		}
+	}else{											// [any other emote] no extra value
+		ref<uint8>(0x10) = emoteID;				// emote Id
 	}
 
-	WBUFB(data,(0x16)) = RBUFB(buff,(0x0B));
+	ref<uint8>(0x16) = motion;					// motion
 }

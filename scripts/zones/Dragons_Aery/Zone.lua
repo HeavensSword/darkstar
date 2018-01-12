@@ -5,20 +5,21 @@
 -----------------------------------
 package.loaded["scripts/zones/Dragons_Aery/TextIDs"] = nil;
 -----------------------------------
-
+require("scripts/zones/Dragons_Aery/TextIDs");
+require("scripts/zones/Dragons_Aery/MobIDs");
+require("scripts/globals/conquest");
 require("scripts/globals/settings");
 require("scripts/globals/zone");
-require("scripts/zones/Dragons_Aery/TextIDs");
 
 -----------------------------------
 -- onInitialize
 -----------------------------------
 
 function onInitialize(zone)
-
-    -- Fafnir
-    SetRespawnTime(17408018, 900, 10800);
-
+    if (LandKingSystem_NQ ~= 1) then
+        UpdateNMSpawnPoint(FAFNIR);
+        GetMobByID(FAFNIR):setRespawnTime(math.random(900, 10800));
+    end
 end;
 
 -----------------------------------

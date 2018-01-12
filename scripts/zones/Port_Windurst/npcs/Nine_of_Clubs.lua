@@ -2,8 +2,8 @@
 --  Area: Port Windurst
 --   NPC: Nine of Clubs
 --  Type: Standard NPC
--- @zone: 240
---  @pos -229.699 -9 185.686
+-- @zone 240
+-- !pos -229.699 -9 185.686
 --
 -- Auto-Script: Requires Verification (Verfied By Brawndo)
 -----------------------------------
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x004a);
+    player:startEvent(74);
 end;
 
 -----------------------------------

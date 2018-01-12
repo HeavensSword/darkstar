@@ -1,8 +1,8 @@
 -----------------------------------
 -- Area: Southern San d'Oria
 -- NPC: Cletae
--- Guild Merchant NPC: Leathercrafting Guild 
--- @pos -189.142 -8.800 14.449 230
+-- Guild Merchant NPC: Leathercrafting Guild
+-- !pos -189.142 -8.800 14.449 230
 -----------------------------------
 package.loaded["scripts/zones/Southern_San_dOria/TextIDs"] = nil;
 -----------------------------------
@@ -24,7 +24,7 @@ function onTrade(player,npc,trade)
             player:messageSpecial(FLYER_REFUSED);
         end
     end
-    
+
 
 end;
 
@@ -36,15 +36,15 @@ function onTrigger(player,npc)
     if (player:sendGuild(5292,3,18,4)) then
         player:showText(npc,CLETAE_DIALOG);
     end
-end; 
+end;
 
 -----------------------------------
 -- onEventUpdate
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -52,10 +52,8 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
-
-
 
 

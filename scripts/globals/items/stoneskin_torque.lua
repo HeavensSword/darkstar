@@ -1,30 +1,19 @@
 -----------------------------------------
 -- ID: 15170
--- Item: Stoneskin torque
--- Item Effect: gives stone skin
+-- Item: Stoneskin Torque
+-- Item Effect: Stoneskin
 -----------------------------------------
-
-require("scripts/globals/settings");
-
------------------------------------------
--- OnItemCheck
------------------------------------------
+require("scripts/globals/status");
+require("scripts/globals/msg");
 
 function onItemCheck(target)
     return 0;
 end;
 
------------------------------------------
--- OnItemUse
------------------------------------------
-
 function onItemUse(target)
-
-    if (target:hasStatusEffect(EFFECT_STONESKIN)) then
-        target:messageBasic(423);
+    if (target:addStatusEffect(EFFECT_STONESKIN, 104, 0, 300)) then
+        target:messageBasic(msgBasic.GAINS_EFFECT_OF_STATUS, EFFECT_STONESKIN);
     else
-        -- delete old
-        target:delStatusEffect(EFFECT_STONESKIN);
-        target:addStatusEffect(EFFECT_STONESKIN, 104, 0, 300);
+        target:messageBasic(msgBasic.NO_EFFECT);
     end
 end;

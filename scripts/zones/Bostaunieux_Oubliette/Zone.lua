@@ -5,9 +5,8 @@
 -----------------------------------
 package.loaded["scripts/zones/Bostaunieux_Oubliette/TextIDs"] = nil;
 -----------------------------------
-
-require("scripts/globals/settings");
 require("scripts/zones/Bostaunieux_Oubliette/TextIDs");
+require("scripts/zones/Bostaunieux_Oubliette/MobIDs");
 require("scripts/globals/zone");
 
 -----------------------------------
@@ -15,18 +14,14 @@ require("scripts/globals/zone");
 -----------------------------------
 
 function onInitialize(zone)
-    local tomes = {17461580,17461581,17461582};
+    UpdateNMSpawnPoint(DREXERION_THE_CONDEMNED);
+    GetMobByID(DREXERION_THE_CONDEMNED):setRespawnTime(math.random(900, 10800));
 
-    SetGroundsTome(tomes);
+    UpdateNMSpawnPoint(PHANDURON_THE_CONDEMNED);
+    GetMobByID(PHANDURON_THE_CONDEMNED):setRespawnTime(math.random(900, 10800));
 
-    -- Drexerion the Condemned
-    SetRespawnTime(17461338, 900, 10800);
-
-    -- Phanduron the Condemned
-    SetRespawnTime(17461343, 900, 10800);
-
-    -- Bloodsucker
-    SetRespawnTime(17461478, 3600, 3600);
+    UpdateNMSpawnPoint(BLOODSUCKER);
+    GetMobByID(BLOODSUCKER):setRespawnTime(3600);
 end;
 
 -----------------------------------

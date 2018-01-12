@@ -2,9 +2,9 @@
 --  Area: Windurst Waters (S)
 --   NPC: Cattah Pamjah
 --  Type: Title Changer
--- @zone: 94
---  @pos -13.564 -2 10.673
--- 
+-- @zone 94
+-- !pos -13.564 -2 10.673
+--
 -- Auto-Script: Requires Verification (Verified by Brawndo)
 -----------------------------------
 package.loaded["scripts/zones/Windurst_Waters_[S]/TextIDs"] = nil;
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x0089);
+    player:startEvent(137);
 end;
 
 -----------------------------------

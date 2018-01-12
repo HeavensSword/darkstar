@@ -1,7 +1,7 @@
 -----------------------------------
---    Area: Windurst Woods
---    NPC:  Cheh Raihah
---    
+-- Area: Windurst Woods
+-- NPC:  Cheh Raihah
+-- 
 -----------------------------------
 
 require("scripts/globals/settings");
@@ -18,7 +18,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    --player:startEvent(0xf7); or player:showText(npc,801); ???
+    --player:startEvent(247); or player:showText(npc,801); ???
 end;
 
 -----------------------------------
@@ -26,8 +26,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -35,8 +35,8 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 

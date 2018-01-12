@@ -2,7 +2,7 @@
 -- Area: The Sanctuary of Zi'Tah
 --  NPC: Calliope, I.M.
 -- Outpost Conquest Guards
--- @pos -40.079 -0.642 -148.785 121
+-- !pos -40.079 -0.642 -148.785 121
 -----------------------------------
 package.loaded["scripts/zones/The_Sanctuary_of_ZiTah/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/The_Sanctuary_of_ZiTah/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/The_Sanctuary_of_ZiTah/TextIDs");
 
-local guardnation = BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 3;      -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = LITELOR;
 local csid        = 0x7ff9;

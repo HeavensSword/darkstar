@@ -1,8 +1,8 @@
 -----------------------------------
---    Area: Inner Horutoto Ruins
---    NPC:  Mahogany Door
+-- Area: Inner Horutoto Ruins
+-- NPC:  Mahogany Door
 --  Involved In Quest: Making Headlines
---    Working 100%
+-- Working 100%
 --  Unable to find EventID for Making Headlines quest. Used dialog ID instead.
 -----------------------------------
 package.loaded["scripts/zones/Inner_Horutoto_Ruins/TextIDs"] = nil;
@@ -36,10 +36,10 @@ function onTrigger(player,npc)
             player:messageSpecial(7208,1,WINDURST_WOODS_SCOOP); -- Confirm Story
             player:setVar("QuestMakingHeadlines_var",prog+16);
         else
-            player:startEvent(0x002c); -- "The door is firmly shut"
+            player:startEvent(44); -- "The door is firmly shut"
         end
     else
-        player:startEvent(0x002c); -- "The door is firmly shut"
+        player:startEvent(44); -- "The door is firmly shut"
     end
     ]]
 end; 
@@ -49,8 +49,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -58,6 +58,6 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;

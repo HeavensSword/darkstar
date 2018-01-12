@@ -2,7 +2,7 @@
 -- Area: Kazham
 -- NPC:  Dakha Topsalwan
 -- @zone 250
--- @pos 
+-- !pos
 -----------------------------------
 package.loaded["scripts/zones/Kazham/TextIDs"] = nil;
 -----------------------------------
@@ -15,30 +15,30 @@ require("scripts/zones/Kazham/TextIDs");
 -----------------------------------
 
 function onTrade(player,npc,trade)
-end; 
+end;
 
 -----------------------------------
 -- onTrigger Action
 -----------------------------------
 
 function onTrigger(player,npc)
-    
+
     Z = player:getZPos();
-    
+
     if (Z >= -20 and Z <= -16) then
-        player:startEvent(0x0042);
+        player:startEvent(66);
     else
-        player:startEvent(0x0079);
+        player:startEvent(121);
     end
-    
+
 end;
 -----------------------------------
 -- onEventUpdate
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -46,9 +46,7 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
-
-
 

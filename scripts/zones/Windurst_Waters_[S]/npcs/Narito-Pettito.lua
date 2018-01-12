@@ -2,9 +2,9 @@
 --  Area: Windurst Waters (S)
 --   NPC: Narito-Pettito
 --  Type: Standard NPC
--- @zone: 94
---  @pos -52.674 -5.999 90.403
--- 
+-- @zone 94
+-- !pos -52.674 -5.999 90.403
+--
 -- Auto-Script: Requires Verification (Verified by Brawndo)
 -----------------------------------
 package.loaded["scripts/zones/Windurst_Waters_[S]/TextIDs"] = nil;
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x01a9);
+    player:startEvent(425);
 end;
 
 -----------------------------------

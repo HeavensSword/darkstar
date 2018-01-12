@@ -1,9 +1,5 @@
 -----------------------------------------
-
 require("scripts/globals/status");
-
------------------------------------------
--- OnItemCheck
 -----------------------------------------
 
 function onItemCheck(target)
@@ -13,12 +9,8 @@ function onItemCheck(target)
     return -1
 end;
 
------------------------------------------
--- OnItemUse
------------------------------------------
-
 function onItemUse(target)
-    target:delStatusEffectSilent(EFFECT_OMERTA)
-    target:messageText(target, 7218)
+    target:delStatusEffectSilent(EFFECT_OMERTA);
+    target:messageText(target, 7218);
 end;
 

@@ -1,24 +1,16 @@
 -----------------------------------------
---    ID: 5822
---    Dweomer Bullet Pouch
---    When used, you will obtain one stack of Dweomer Bullets
------------------------------------------
-
------------------------------------------
--- OnItemCheck
+-- ID: 5822
+-- Dweomer Bullet Pouch
+-- When used, you will obtain one stack of Dweomer Bullets
 -----------------------------------------
 
 function onItemCheck(target)
-local result = 0;
+    local result = 0;
     if (target:getFreeSlotsCount() == 0) then
         result = 308;
     end
-return result;
+    return result;
 end;
-
------------------------------------------
--- OnItemUse
------------------------------------------
 
 function onItemUse(target)
     target:addItem(19198,99);

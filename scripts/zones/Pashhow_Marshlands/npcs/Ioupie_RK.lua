@@ -2,7 +2,7 @@
 -- Area: Pashhow Marshlands
 --  NPC: Ioupie, R.K.
 -- Type: Border Conquest Guards
--- @pos 536.291 23.517 694.063 109
+-- !pos 536.291 23.517 694.063 109
 -----------------------------------
 package.loaded["scripts/zones/Pashhow_Marshlands/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Pashhow_Marshlands/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Pashhow_Marshlands/TextIDs");
 
-local guardnation = SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 4;        -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = DERFLAND;
 local csid        = 0x7ffa;

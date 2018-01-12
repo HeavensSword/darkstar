@@ -2,7 +2,7 @@
 -- Area:  King Ranperre's Tomb
 -- NPC:   ??? (qm1)
 -- Notes: Used to teleport down the stairs
--- @pos -81 -1 -97 190
+-- !pos -81 -1 -97 190
 -----------------------------------
 package.loaded["scripts/zones/King_Ranperres_Tomb/TextIDs"] = nil;
 -----------------------------------
@@ -20,17 +20,17 @@ end;
 -- onTrigger Action
 -----------------------------------
 
-function onTrigger(player,npc) 
-    player:startEvent(0x000a);
-end; 
+function onTrigger(player,npc)
+    player:startEvent(10);
+end;
 
 -----------------------------------
 -- onEventUpdate
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -38,13 +38,13 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 
--- TODO: Missing teleport-animation. Might be a core issue as to why it wont display. 
+-- TODO: Missing teleport-animation. Might be a core issue as to why it wont display.
 
-    if (csid == 0x000a and option == 100) then
+    if (csid == 10 and option == 100) then
         player:setPos(-81.5,7.297,-127.919,71);
-    end    
+    end
 
 end;

@@ -2,7 +2,7 @@
 -- Area: Bibiki Bay
 -- NPC:  Pohka Chichiyowahl
 -- Type: Standard Merchant NPC
--- @pos -415 -2 -430 4
+-- !pos -415 -2 -430 4
 -----------------------------------
 
 package.loaded["scripts/zones/Bibiki_Bay/TextIDs"] = nil;
@@ -30,7 +30,7 @@ function onTrigger(player,npc)
         0x1034,   290, 3  -- Antidote
     }
 
-    showNationShop(player, WINDURST, stock);
+    showNationShop(player, NATION_WINDURST, stock);
 end;
 
 -----------------------------------

@@ -1,24 +1,16 @@
 -----------------------------------------
---    ID: 5819
---    Item: Antlion Quiver
---    When used, you will obtain one stack of Antlion Arrows
------------------------------------------
-
------------------------------------------
--- OnItemCheck
+-- ID: 5819
+-- Item: Antlion Quiver
+-- When used, you will obtain one stack of Antlion Arrows
 -----------------------------------------
 
 function onItemCheck(target)
-local result = 0;
+    local result = 0;
     if (target:getFreeSlotsCount() == 0) then
         result = 308;
     end
-return result;
+    return result;
 end;
-
------------------------------------------
--- OnItemUse
------------------------------------------
 
 function onItemUse(target)
     target:addItem(19195,99);

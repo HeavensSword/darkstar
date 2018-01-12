@@ -2,9 +2,9 @@
 --  Area: Port San d'Oria
 --   NPC: Ilgusin
 --  Type: Standard NPC
--- @zone: 232
---  @pos -68.313 -6.5 -36.985
--- 
+-- @zone 232
+-- !pos -68.313 -6.5 -36.985
+--
 -- Auto-Script: Requires Verification (Verified by Brawndo)
 -----------------------------------
 package.loaded["scripts/zones/Port_San_dOria/TextIDs"] = nil;
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x024f);
+    player:startEvent(591);
 end;
 
 -----------------------------------

@@ -2,7 +2,7 @@
 -- Area: Jugner Forest
 --  NPC: Pure Heart, I.M.
 -- Type: Border Conquest Guards
--- @pos 570.732 -2.637 553.508 104
+-- !pos 570.732 -2.637 553.508 104
 -----------------------------------
 package.loaded["scripts/zones/Jugner_Forest/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Jugner_Forest/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Jugner_Forest/TextIDs");
 
-local guardnation = BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 4;      -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = NORVALLEN;
 local csid        = 0x7ff8;

@@ -2,9 +2,9 @@
 --  Area: Northern San d'Oria
 --   NPC: Jovial Rat
 --  Type: Past Event Watcher
--- @zone: 32
---  @pos 
--- 
+-- @zone 32
+-- !pos
+--
 -- Auto-Script: Requires Verification (Verified by Brawndo)
 -----------------------------------
 package.loaded["scripts/zones/Northern_San_dOria/TextIDs"] = nil;
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x0004);
+    player:startEvent(4);
 end;
 
 -----------------------------------

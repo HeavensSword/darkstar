@@ -1,27 +1,14 @@
 -----------------------------------
 -- Area: Ghelsba Outpost (140)
 --  MOB: Orcish_Grunt
+-- Note: PH for Thousandarm Deshglesh
 -----------------------------------
-
 require("scripts/zones/Ghelsba_Outpost/MobIDs");
+require("scripts/globals/mobs");
 
------------------------------------
--- onMobDespawn
------------------------------------
+function onMobDeath(mob, player, isKiller)
+end;
 
 function onMobDespawn(mob)
-
-    local mobID = mob:getID();
-    if (Thousandarm_Deshglesh_PH[mobID] ~= nil) then
-
-        local ToD = GetServerVariable("[POP]Thousandarm_Deshglesh");
-        if (ToD <= os.time(t) and GetMobAction(Thousandarm_Deshglesh) == 0) then
-            if (math.random(1,20) == 5) then
-                UpdateNMSpawnPoint(Thousandarm_Deshglesh);
-                GetMobByID(Thousandarm_Deshglesh):setRespawnTime(GetMobRespawnTime(mobID));
-                SetServerVariable("[PH]Thousandarm_Deshglesh", mobID);
-                DeterMob(mobID, true);
-            end
-        end
-    end
+    phOnDespawn(mob,THOUSANDARM_DESHGLESH_PH,5,math.random(3600,10800)); -- 1 to 3 hours
 end;

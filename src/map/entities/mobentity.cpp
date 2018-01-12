@@ -126,9 +126,14 @@ CMobEntity::CMobEntity()
         std::make_unique<CTargetFind>(this));
 }
 
-void CMobEntity::setMobFlags(uint32 MobFlags)
+uint32 CMobEntity::getEntityFlags()
 {
-    m_flags = MobFlags;
+    return m_flags;
+}
+
+void CMobEntity::setEntityFlags(uint32 EntityFlags)
+{
+    m_flags = EntityFlags;
 }
 
 CMobEntity::~CMobEntity()
@@ -183,13 +188,13 @@ uint32 CMobEntity::GetRandomGil()
         return dsprand::GetRandomNumber(min, max);
     }
 
-    float gil = pow(GetMLevel(), 1.05f);
+    float gil = (float)pow(GetMLevel(), 1.05f);
 
     if (gil < 1) {
         gil = 1;
     }
 
-    uint16 highGil = (float)(gil) / 3 + 4;
+    uint16 highGil = (uint16)(gil / 3 + 4);
 
     if (max)
     {
@@ -210,10 +215,10 @@ uint32 CMobEntity::GetRandomGil()
 
     if (getMobMod(MOBMOD_GIL_BONUS) != 0)
     {
-        gil = (float)gil * (getMobMod(MOBMOD_GIL_BONUS) / 100.0f);
+        gil *= (getMobMod(MOBMOD_GIL_BONUS) / 100.0f);
     }
 
-    return gil;
+    return (uint32)gil;
 }
 
 bool CMobEntity::CanDropGil()
@@ -378,7 +383,7 @@ uint8 CMobEntity::TPUseChance()
         return 100;
     }
 
-    return getMobMod(MOBMOD_TP_USE_CHANCE);
+    return (uint8)getMobMod(MOBMOD_TP_USE_CHANCE);
 }
 
 void CMobEntity::setMobMod(uint16 type, int16 value)
@@ -504,13 +509,13 @@ void CMobEntity::PostTick()
     if (loc.zone && updatemask)
     {
         loc.zone->PushPacket(this, CHAR_INRANGE, new CEntityUpdatePacket(this, ENTITY_UPDATE, updatemask));
-        
+
         // If this mob is charmed, it should sync with its master
         if (PMaster && PMaster->PPet == this && PMaster->objtype == TYPE_PC)
         {
             ((CCharEntity*)PMaster)->pushPacket(new CPetSyncPacket((CCharEntity*)PMaster));
         }
-        
+
         updatemask = 0;
     }
 }
@@ -541,9 +546,14 @@ bool CMobEntity::ValidTarget(CBattleEntity* PInitiator, uint16 targetFlags)
         return true;
     }
 
+    if ((targetFlags & TARGET_PLAYER) && allegiance == PInitiator->allegiance && !isCharmed)
+    {
+        return true;
+    }
+
     if (targetFlags & TARGET_NPC)
     {
-        if (allegiance == PInitiator->allegiance && !(m_Behaviour & BEHAVIOUR_NOHELP))
+        if (allegiance == PInitiator->allegiance && !(m_Behaviour & BEHAVIOUR_NOHELP) && !isCharmed)
         {
             return true;
         }
@@ -560,7 +570,7 @@ void CMobEntity::Spawn()
     m_THLvl = 0;
     m_ItemStolen = false;
     m_DropItemTime = 1000;
-    animationsub = getMobMod(MOBMOD_SPAWN_ANIMATIONSUB);
+    animationsub = (uint8)getMobMod(MOBMOD_SPAWN_ANIMATIONSUB);
     CallForHelp(false);
 
     PEnmityContainer->Clear();
@@ -602,7 +612,7 @@ void CMobEntity::Spawn()
             }
         }
     }
-    
+
     m_DespawnTimer = time_point::min();
     luautils::OnMobSpawn(this);
 }
@@ -610,10 +620,6 @@ void CMobEntity::Spawn()
 void CMobEntity::OnWeaponSkillFinished(CWeaponSkillState& state, action_t& action)
 {
     CBattleEntity::OnWeaponSkillFinished(state, action);
-
-    auto PSkill = state.GetSkill();
-    auto PBattleTarget = static_cast<CBattleEntity*>(state.GetTarget());
-    PAI->EventHandler.triggerListener("WEAPONSKILL_USE", this, PSkill->getID());
 
     static_cast<CMobController*>(PAI->GetController())->TapDeaggroTime();
 }
@@ -645,9 +651,7 @@ void CMobEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
     }
 
     action.id = id;
-    if (objtype == TYPE_PET && (
-        static_cast<CPetEntity*>(this)->getPetType() == PETTYPE_AUTOMATON ||
-        static_cast<CPetEntity*>(this)->getPetType() == PETTYPE_AVATAR))
+    if (objtype == TYPE_PET && static_cast<CPetEntity*>(this)->getPetType() == PETTYPE_AVATAR)
         action.actiontype = ACTION_PET_MOBABILITY_FINISH;
     else if (PSkill->getID() < 256)
         action.actiontype = ACTION_WEAPONSKILL_FINISH;
@@ -671,7 +675,10 @@ void CMobEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
             PAI->TargetFind->findSingleTarget(PTarget, findFlags);
         }
     }
-    else
+
+    uint16 targets = (uint16)PAI->TargetFind->m_targets.size();
+
+    if (!PTarget || targets == 0)
     {
         action.actiontype = ACTION_MOBABILITY_INTERRUPT;
         actionList_t& actionList = action.getNewActionList();
@@ -682,9 +689,7 @@ void CMobEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
         return;
     }
 
-    uint16 actionsLength = PAI->TargetFind->m_targets.size();
-
-    PSkill->setTotalTargets(actionsLength);
+    PSkill->setTotalTargets(targets);
     PSkill->setTP(state.GetSpentTP());
     PSkill->setHPP(GetHPP());
 
@@ -712,12 +717,15 @@ void CMobEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
 
         if (objtype == TYPE_PET && static_cast<CPetEntity*>(this)->getPetType() != PETTYPE_JUG_PET)
         {
-            target.animation = PSkill->getPetAnimationID();
+            if(static_cast<CPetEntity*>(this)->getPetType() == PETTYPE_AVATAR || static_cast<CPetEntity*>(this)->getPetType() == PETTYPE_WYVERN)
+            {
+                target.animation = PSkill->getPetAnimationID();
+            }
             target.param = luautils::OnPetAbility(PTarget, this, PSkill, PMaster, &action);
         }
         else
         {
-            target.param = luautils::OnMobWeaponSkill(PTarget, this, PSkill);
+            target.param = luautils::OnMobWeaponSkill(PTarget, this, PSkill, &action);
         }
 
         if (msg == 0)
@@ -735,7 +743,7 @@ void CMobEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
         {
             target.reaction = REACTION_MISS;
             target.speceffect = SPECEFFECT_NONE;
-            if (msg = PSkill->getAoEMsg())
+            if (msg == PSkill->getAoEMsg())
                 msg = 282;
         }
         else
@@ -747,12 +755,12 @@ void CMobEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
         {
             target.speceffect = SPECEFFECT_RECOIL;
             target.knockback = PSkill->getKnockback();
-            if (first && (PSkill->getSkillchain() != 0))
+            if (first && (PSkill->getPrimarySkillchain() != 0))
             {
-                CWeaponSkill* PWeaponSkill = battleutils::GetWeaponSkill(PSkill->getSkillchain());
-                if (PWeaponSkill)
+                if (PSkill->getPrimarySkillchain())
                 {
-                    SUBEFFECT effect = battleutils::GetSkillChainEffect(PTarget, PWeaponSkill);
+                    SUBEFFECT effect = battleutils::GetSkillChainEffect(PTarget, PSkill->getPrimarySkillchain(),
+                        PSkill->getSecondarySkillchain(), PSkill->getTertiarySkillchain());
                     if (effect != SUBEFFECT_NONE)
                     {
                         int32 skillChainDamage = battleutils::TakeSkillchainDamage(this, PTarget, target.param, nullptr);
@@ -851,7 +859,7 @@ void CMobEntity::DropItems()
                 if (dsprand::GetRandomNumber(100) < 20 && PChar->PTreasurePool->CanAddSeal() && !getMobMod(MOBMOD_NO_DROPS))
                 {
                     //RULES: Only 1 kind may drop per mob
-                    if (GetMLevel() >= 75 && luautils::IsExpansionEnabled("ABYSSEA")) //all 4 types
+                    if (GetMLevel() >= 75 && luautils::IsContentEnabled("ABYSSEA")) //all 4 types
                     {
                         switch (dsprand::GetRandomNumber(4))
                         {
@@ -869,7 +877,7 @@ void CMobEntity::DropItems()
                                 break;
                         }
                     }
-                    else if (GetMLevel() >= 70 && luautils::IsExpansionEnabled("ABYSSEA")) //b.seal & k.seal & k.crest
+                    else if (GetMLevel() >= 70 && luautils::IsContentEnabled("ABYSSEA")) //b.seal & k.seal & k.crest
                     {
                         switch (dsprand::GetRandomNumber(3))
                         {
@@ -918,22 +926,23 @@ void CMobEntity::DropItems()
 }
 
 
-bool CMobEntity::CanAttack(CBattleEntity* PTarget, std::unique_ptr<CMessageBasicPacket>& errMsg)
+bool CMobEntity::CanAttack(CBattleEntity* PTarget, std::unique_ptr<CBasicPacket>& errMsg)
 {
     auto skill_list_id {getMobMod(MOBMOD_ATTACK_SKILL_LIST)};
     if (skill_list_id)
     {
-        auto attack_range {m_ModelSize};
+        auto attack_range {GetMeleeRange()};
         auto skillList {battleutils::GetMobSkillList(skill_list_id)};
         if (!skillList.empty())
         {
             auto skill {battleutils::GetMobSkill(skillList.front())};
             if (skill)
             {
-                attack_range = skill->getDistance();
+                attack_range = (uint8)skill->getDistance();
             }
         }
-        if (distance(loc.p, PTarget->loc.p) > attack_range || !PAI->GetController()->IsAutoAttackEnabled())
+        if ((distance(loc.p, PTarget->loc.p) - PTarget->m_ModelSize) > attack_range ||
+            !PAI->GetController()->IsAutoAttackEnabled())
         {
             return false;
         }
@@ -965,6 +974,15 @@ void CMobEntity::OnDeathTimer()
         PAI->Despawn();
 }
 
+void CMobEntity::OnDespawn(CDespawnState&)
+{
+    FadeOut();
+    PAI->Internal_Respawn(std::chrono::milliseconds(m_RespawnTime));
+    luautils::OnMobDespawn(this);
+    //#event despawn
+    PAI->EventHandler.triggerListener("DESPAWN", this);
+}
+
 void CMobEntity::Die()
 {
     m_THLvl = PEnmityContainer->GetHighestTH();
@@ -977,7 +995,10 @@ void CMobEntity::Die()
     PAI->Internal_Die(15s);
     CBattleEntity::Die();
     PAI->QueueAction(queueAction_t(std::chrono::milliseconds(m_DropItemTime), false, [this](CBaseEntity* PEntity) {
-        DropItems();
+        if (static_cast<CMobEntity*>(PEntity)->isDead())
+        {
+            DropItems();
+        }
     }));
     if (PMaster && PMaster->PPet == this && PMaster->objtype == TYPE_PC)
     {

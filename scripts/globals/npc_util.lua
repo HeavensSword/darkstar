@@ -78,7 +78,7 @@ function npcUtil.giveItem(player, items)
         items = {items}
     end
 
-    if (freeSlots < table.getn(items)) then
+    if (freeSlots < #items) then
 
         local msg = nil;
 
@@ -185,18 +185,19 @@ function npcUtil.tradeHas(trade, items, gil)
         end
 
         -- given different amount of items
-        if (trade:getItemCount() ~= table.getn(items)) then
+        if (trade:getItemCount() ~= #items) then
             return false;
         end
 
-        for k, v in pairs(items) do
-            if (itemCount[k] == nil) then
-                itemCount[k] = 1;
+        for _, v in pairs(items) do
+            if (itemCount[v] == nil) then
+                itemCount[v] = 1;
             else
-                itemCount[k] = itemCount[k] + 1
+                itemCount[v] = itemCount[v] + 1
             end
-
-            if (trade:hasItemQty(k, itemCount[k]) == false) then
+        end
+        for k, v in pairs(itemCount) do
+            if (trade:hasItemQty(k, v) == false) then
                 -- don't have the right amount of item
                 return false;
             end
@@ -226,7 +227,7 @@ function npcUtil.UpdateNPCSpawnPoint(id, minTime, maxTime, posTable, serverVar)
     local npc = GetNPCByID(id);
     local respawnTime = math.random(minTime, maxTime);
     local newPosition = npcUtil.pickNewPosition(npc:getID(), posTable, true);
-    serverVar = serverVar or null; -- serverVar is optional
+    serverVar = serverVar or nil; -- serverVar is optional
 
     if serverVar then
         if (GetServerVariable(serverVar) <= os.time(t)) then
@@ -239,3 +240,50 @@ function npcUtil.UpdateNPCSpawnPoint(id, minTime, maxTime, posTable, serverVar)
         npcUtil.UpdateNPCSpawnPoint(id, minTime, maxTime, posTable, serverVar);
     end)
 end;
+
+function npcUtil.fishingAnimation(npc, phaseDuration, func)
+    func = func or function(npc)
+        -- return true to not loop again
+        return false
+    end
+
+    if func(npc) then
+        return
+    end
+    npc:timer(phaseDuration * 1000, function(npc)
+        local anims =
+        {
+            [ANIMATION_FISHING_NPC] = { duration = 5, nextAnim = { ANIMATION_FISHING_START } },
+            [ANIMATION_FISHING_START] = { duration = 10, nextAnim = { ANIMATION_FISHING_FISH } },
+            [ANIMATION_FISHING_FISH] = { duration = 10,
+                                            nextAnim =
+                                            {
+                                                ANIMATION_FISHING_CAUGHT,
+                                                ANIMATION_FISHING_ROD_BREAK,
+                                                ANIMATION_FISHING_LINE_BREAK,
+                                            }
+                                       },
+            [ANIMATION_FISHING_ROD_BREAK] = { duration = 3, nextAnim = { ANIMATION_FISHING_NPC } },
+            [ANIMATION_FISHING_LINE_BREAK] = { duration = 3, nextAnim = { ANIMATION_FISHING_NPC } },
+            [ANIMATION_FISHING_CAUGHT] = { duration = 5, nextAnim = { ANIMATION_FISHING_NPC } },
+            [ANIMATION_FISHING_STOP] = { duration = 3, nextAnim = { ANIMATION_FISHING_NPC } },
+        }
+
+        local anim = anims[npc:getAnimation()]
+        local nextAnimationId = ANIMATION_FISHING_NPC
+        local nextAnimationDuration = 10
+        local nextAnim = nil
+        if anim then
+            nextAnim = anim.nextAnim[math.random(1, #anim.nextAnim)]
+        end
+
+        if nextAnim then
+            nextAnimationId = nextAnim
+            if anims[nextAnimationId] then
+                nextAnimationDuration = anims[nextAnimationId].duration
+            end
+        end
+        npc:setAnimation(nextAnimationId)
+        npcUtil.fishingAnimation(npc, nextAnimationDuration, func)
+    end)
+end

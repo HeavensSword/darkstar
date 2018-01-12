@@ -1,24 +1,37 @@
 -----------------------------------
--- Zone: Abyssea-Konschtat
---  NPC: ???
--- Spawns: Ophanim
+-- Zone: Abyssea-Tahrongi
+--  NPC: qm3 (???)
+-- Spawns Ophanim
+-- !pos -195 -16 -165 45
 -----------------------------------
-
-require("scripts/globals/status");
+require("scripts/globals/abyssea");
 
 -----------------------------------
 -- onTrade Action
 -----------------------------------
 
 function onTrade(player,npc,trade)
---[[
-    if (trade:hasItemQty(2917,1) == false or trade:hasItemQty(2945,1) == false or trade:hasItemQty(2946,1) == false) then -- Player is missing at least one required item.
-        player:startEvent(1010, 2917 ,2945 ,2946); -- Inform payer what items they need.
-    elseif (GetMobAction(16961919) == ACTION_NONE) then -- mob not already spawned from this
-        if (trade:hasItemQty(2917,1) and trade:hasItemQty(2945,1) and trade:hasItemQty(2946,1) and trade:getItemCount() == 3) then -- Player has all the required items.
-            SpawnMob(16961919):updateClaim(player); -- Spawn NM, Despawn after inactive for 5 minutes (pt has to reclaim within 5 of a wipe)
-            player:tradeComplete();
-        end
-    end
-]]
+    abysseaOnTrade(player,npc,trade);
+end;
+
+-----------------------------------
+-- onTrigger Action
+-----------------------------------
+
+function onTrigger(player,npc)
+    abysseaOnTrigger(player,npc);
+end;
+
+-----------------------------------
+-- onEventUpdate
+-----------------------------------
+
+function onEventUpdate(player,csid,option)
+end;
+
+-----------------------------------
+-- onEventFinish
+-----------------------------------
+
+function onEventFinish(player,csid,option)
 end;

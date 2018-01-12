@@ -1,8 +1,8 @@
 -----------------------------------
---    Area: Windurst Waters
---    NPC: Anja-Enja
---    Adventurer's Assistant
---    Working 100%
+-- Area: Windurst Waters
+-- NPC: Anja-Enja
+-- Adventurer's Assistant
+-- Working 100%
 -------------------------------------
 
 require("scripts/globals/settings");
@@ -21,7 +21,7 @@ end;
 -----------------------------------
  
 function onTrigger(player,npc) 
-    player:startEvent(0x0116);
+    player:startEvent(278);
 end; 
 
 -----------------------------------
@@ -29,8 +29,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -38,8 +38,8 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 

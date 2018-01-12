@@ -2,7 +2,7 @@
 -- Area: North Gustaberg
 --  NPC: Quellebie, R.K.
 -- Type: Border Conquest Guards
--- @pos -520.704 38.75 560.258 106
+-- !pos -520.704 38.75 560.258 106
 -----------------------------------
 package.loaded["scripts/zones/North_Gustaberg/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/North_Gustaberg/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/North_Gustaberg/TextIDs");
 
-local guardnation = SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 4;        -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = GUSTABERG;
 local csid        = 0x7ffa;

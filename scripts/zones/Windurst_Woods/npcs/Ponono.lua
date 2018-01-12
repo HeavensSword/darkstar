@@ -2,14 +2,13 @@
 -- Area: Windurst Woods
 --  NPC: Ponono
 -- Type: Clothcraft Guild Master
--- @pos -38.243 -2.25 -120.954 241
+-- !pos -38.243 -2.25 -120.954 241
 -----------------------------------
 package.loaded["scripts/zones/Windurst_Woods/TextIDs"] = nil;
 -----------------------------------
-
-require("scripts/globals/status");
-require("scripts/globals/crafting");
 require("scripts/zones/Windurst_Woods/TextIDs");
+require("scripts/globals/crafting");
+require("scripts/globals/status");
 
 -----------------------------------
 -- onTrade Action
@@ -20,7 +19,7 @@ function onTrade(player,npc,trade)
 
     if (newRank ~= 0) then
         player:setSkillRank(SKILL_CLOTHCRAFT,newRank);
-        player:startEvent(0x271c,0,0,0,0,newRank);
+        player:startEvent(10012,0,0,0,0,newRank);
     end
 end;
 
@@ -36,10 +35,10 @@ function onTrigger(player,npc)
     if (guildMember == 1) then guildMember = 10000; end
     if (canGetNewRank(player,craftSkill,SKILL_CLOTHCRAFT) == 1) then getNewRank = 100; end
 
-    player:startEvent(0x271b,testItem,getNewRank,30,guildMember,44,0,0,0);
+    player:startEvent(10011,testItem,getNewRank,30,guildMember,44,0,0,0);
 end;
 
--- 0x271b  0x271c  0x02bc  0x02bd  0x02be  0x02bf  0x02c0  0x02c1  0x0340  0x02fd
+-- 10011  10012  0x02bc  0x02bd  0x02be  0x02bf  0x02c0  0x02c1  0x0340  0x02fd
 
 -----------------------------------
 -- onEventUpdate
@@ -57,13 +56,13 @@ end;
 function onEventFinish(player,csid,option)
     -- printf("CSID: %u",csid);
     -- printf("RESULT: %u",option);
-    if (csid == 0x271b and option == 1) then
+    if (csid == 10011 and option == 1) then
         if (player:getFreeSlotsCount() == 0) then
             player:messageSpecial(ITEM_CANNOT_BE_OBTAINED,4099);
         else
-            player:addItem(4099);
+            player:addItem(4099); -- earth crystal
             player:messageSpecial(ITEM_OBTAINED,4099);
-            signupGuild(player,8);
+            signupGuild(player, guild.clothcraft);
         end
     end
 end;

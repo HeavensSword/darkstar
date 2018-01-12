@@ -34,7 +34,7 @@ class CLuaBattlefield
     CBattlefield *m_PLuaBattlefield;
 public:
 
-    static const int8 className[];
+    static const char className[];
     static Lunar<CLuaBattlefield>::Register_t methods[];
 
     CLuaBattlefield(lua_State*);
@@ -48,13 +48,14 @@ public:
     int32 getBcnmID(lua_State*);
     int32 getTimeLimit(lua_State*);
     int32 getTimeInside(lua_State*);
-    int32 getFastestTime(lua_State*);
-    int32 getFastestPlayer(lua_State*);
+    int32 getRecord(lua_State*);
     int32 setAsFastest(lua_State*);
     int32 setEntrance(lua_State*);
     int32 getEntrance(lua_State*);
     int32 insertAlly(lua_State*);
     int32 getAllies(lua_State*);
+    int32 getEnemies(lua_State*);
+    int32 getPlayers(lua_State*);
     int32 lose(lua_State*);
     int32 win(lua_State*);
 };

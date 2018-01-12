@@ -15,7 +15,7 @@ require("scripts/globals/status");
 -- OnItemCheck
 -----------------------------------------
 function onItemCheck(target)
-local result = 0;
+    local result = 0;
     if (target:getRace() ~= 8) then
         result = 247;
     end
@@ -27,10 +27,6 @@ local result = 0;
     end
     return result;
 end;
-
------------------------------------------
--- OnItemUse
------------------------------------------
 
 function onItemUse(target)
     target:addStatusEffect(EFFECT_FOOD,0,0,1800,5565);
@@ -47,11 +43,7 @@ function onEffectGain(target,effect)
     target:addMod(MOD_INT, -6);
 end;
 
------------------------------------------
--- onEffectLose Action
------------------------------------------
-
-function onEffectLose(target,effect)
+function onEffectLose(target, effect)
     target:delMod(MOD_HP, 10);
     target:delMod(MOD_MP, -10);
     target:delMod(MOD_STR, 6);

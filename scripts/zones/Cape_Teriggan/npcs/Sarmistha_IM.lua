@@ -2,7 +2,7 @@
 -- Area: Cape Teriggan
 --  NPC: Sarmistha, I.M.
 -- Type: Outpost Conquest Guards
--- @pos -185 7 -63 113
+-- !pos -185 7 -63 113
 -----------------------------------
 package.loaded["scripts/zones/Cape_Teriggan/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Cape_Teriggan/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Cape_Teriggan/TextIDs");
 
-local guardnation = BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 3;      -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = VOLLBOW;
 local csid        = 0x7ff9;

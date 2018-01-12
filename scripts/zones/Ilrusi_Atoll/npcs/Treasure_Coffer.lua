@@ -1,8 +1,8 @@
 -----------------------------------
--- Area: 
+-- Area:
 -- NPC:  Treasure Coffer
 -- @zone illrusi atoll
--- @pos
+-- !pos
 -----------------------------------
 package.loaded["scripts/zones/Ilrusi_Atoll/TextIDs"] = nil;
 package.loaded["scripts/globals/bcnm"] = nil;
@@ -13,8 +13,6 @@ require("scripts/globals/settings");
 require("scripts/globals/keyitems");
 require("scripts/globals/missions");
 require("scripts/zones/Ilrusi_Atoll/TextIDs");
-
-
 -----------------------------------
 -- onTrade Action
 -----------------------------------
@@ -35,7 +33,7 @@ function onTrigger(player,npc)
  print(correctcofferID);
   if (npcID == correctcofferID) then --correct coffer ??
    player:messageSpecial( GOLDEN);
-   
+
    if (player:getCurrentMission(ASSAULT)==GOLDEN_SALVAGE) then
    player:completeMission(ASSAULT,GOLDEN_SALVAGE);
    end
@@ -49,16 +47,16 @@ function onTrigger(player,npc)
    SpawnMob(npcID);
    end
 
-  
-end; 
+
+end;
 
 -----------------------------------
 -- onEventUpdate
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -66,6 +64,6 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;

@@ -1,7 +1,7 @@
 -----------------------------------
 -- Area: Wajaom Woodlands
 -- NPC:  Engraved Tablet
--- @pos -64 -11 -641 51
+-- !pos -64 -11 -641 51
 -----------------------------------
 
 require("scripts/globals/keyitems");
@@ -18,13 +18,13 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    
+
     if (player:hasKeyItem(SICKLEMOON_SALT)) then
-        player:startEvent(0x0202);
+        player:startEvent(514);
     else
-        player:startEvent(0x0204);
+        player:startEvent(516);
     end
-    
+
 end;
 
 -----------------------------------
@@ -32,8 +32,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
--- printf("CSID: %u",csid);
--- printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -41,11 +41,11 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
--- printf("CSID: %u",csid);
--- printf("RESULT: %u",option);
-    
-    if (csid == 0x0202 and option == 1) then
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
+
+    if (csid == 514 and option == 1) then
         player:delKeyItem(SICKLEMOON_SALT);
     end
-    
+
 end;

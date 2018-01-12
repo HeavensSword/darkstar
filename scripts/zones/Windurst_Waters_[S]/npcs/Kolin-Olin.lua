@@ -2,8 +2,8 @@
 --  Area: Windurst Waters (S)
 --   NPC: Kolin-Olin
 --  Type: Standard NPC
--- @zone: 94
---  @pos 9.981 -2.478 33.786
+-- @zone 94
+-- !pos 9.981 -2.478 33.786
 --
 -- Auto-Script: Requires Verification (Verified by Brawndo)
 -----------------------------------
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x0132);
+    player:startEvent(306);
 end;
 
 -----------------------------------

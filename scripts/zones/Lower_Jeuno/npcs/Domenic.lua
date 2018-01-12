@@ -24,9 +24,9 @@ end;
 
 function onTrigger(player,npc)
     if (player:hasCompleteQuest(JEUNO,BEYOND_INFINITY) == true) then
-        player:startEvent(0x2783,player:getGil());
+        player:startEvent(10115,player:getGil());
     else
-        player:startEvent(0x2784);
+        player:startEvent(10116);
     end
 end;
 
@@ -35,8 +35,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -44,9 +44,9 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
-    if (csid == 0x2783) then
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
+    if (csid == 10115) then
         if (option == 1 and player:getGil() >= 750) then
             player:delGil(750);
             toGhelsba(player);

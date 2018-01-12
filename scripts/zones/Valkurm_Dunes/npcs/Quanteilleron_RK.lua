@@ -2,7 +2,7 @@
 -- Area: Valkurm Dunes
 --  NPC: Quanteilleron, R.K.
 -- Outpost Conquest Guards
--- @pos 144 -7 104 103
+-- !pos 144 -7 104 103
 -------------------------------------
 package.loaded["scripts/zones/Valkurm_Dunes/TextIDs"] = nil;
 -------------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Valkurm_Dunes/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Valkurm_Dunes/TextIDs");
 
-local guardnation = SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 3;        -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = ZULKHEIM;
 local csid        = 0x7ffb;

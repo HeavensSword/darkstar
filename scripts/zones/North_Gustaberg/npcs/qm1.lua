@@ -2,8 +2,8 @@
 -- Area: North Gustaberg
 -- NPC: qm1 (???)
 -- Involved in Quest "The Siren's Tear"
--- @pos 309.600, 2.600, 324.000 106 | DB start position
--- @pos 290.000, 0.600, 332.100 106 | alternative start position
+-- !pos 309.600, 2.600, 324.000 106 | DB start position
+-- !pos 290.000, 0.600, 332.100 106 | alternative start position
 -----------------------------------
 package.loaded["scripts/zones/North_Gustaberg/TextIDs"] = nil;
 -----------------------------------
@@ -17,38 +17,32 @@ require("scripts/zones/North_Gustaberg/TextIDs");
 -----------------------------------
 
 function onTrade(player,npc,trade)
-end; 
-
-
+end;
 -----------------------------------
 -- onTrigger Action
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x000a);
+    player:startEvent(10);
 end;
-
-
 -----------------------------------
 -- onEventUpdate
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID2: %u",csid);
---printf("RESULT2: %u",option);
+    -- printf("CSID2: %u",csid);
+    -- printf("RESULT2: %u",option);
 end;
-
-
 -----------------------------------
 -- onEventFinish
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
     local npc = player:getEventTarget();
 
-    if (csid == 0x000a and option == 0) then
+    if (csid == 10 and option == 0) then
         local mainweapon = player:getEquipID(SLOT_MAIN);
         local subweapon = player:getEquipID(SLOT_SUB);
 
@@ -58,7 +52,7 @@ function onEventFinish(player,csid,option)
             local SirensTear = player:getQuestStatus(BASTOK,THE_SIREN_S_TEAR);
             local SirensTearProgress = player:getVar("SirensTear");
 
-            if (SirensTear == QUEST_COMPLETED and SirensTearProgress < 2) then 
+            if (SirensTear == QUEST_COMPLETED and SirensTearProgress < 2) then
                 player:messageSpecial(ITEM_CANNOT_BE_OBTAINED,576);
             else
                 if (freeslots == 0) then
@@ -76,10 +70,8 @@ function onEventFinish(player,csid,option)
             player:messageSpecial(SHINING_OBJECT_SLIPS_AWAY);
             moveSirenTear(npc);
         end
-    end 
+    end
 end;
-
-
 -----------------------------------
 -- Additional Functions
 -----------------------------------
@@ -98,12 +90,10 @@ function moveSirenTear(npc)
         [290000332] = function (x) npc:setPos(296,3+dispf,220,0); end,
     default = function (x) end }
 end;
-
-
 function resetSirenTear(npc)
     npcPos = math.floor(math.floor(npc:getXPos())*1000000 + math.floor(npc:getYPos())*1000 + npc:getZPos());
     disp = (npc:getYPos()*100 - math.floor(npc:getYPos()*100+0.5))*10;
-    
+
     if (npcPos == 290000332 or disp == 1) then
         npc:setPos(309.6,2.6,324);
     else

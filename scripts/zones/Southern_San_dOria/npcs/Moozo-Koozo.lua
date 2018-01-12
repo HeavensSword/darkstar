@@ -1,8 +1,8 @@
 -----------------------------------
---    Area: Southern San d'Oria
---    NPC: Moozo-Koozo
+-- Area: Southern San d'Oria
+-- NPC: Moozo-Koozo
 --  Title Change NPC
---  @pos 83 0 120 230
+-- !pos 83 0 120 230
 -------------------------------------
 package.loaded["scripts/zones/Southern_San_dOria/TextIDs"] = nil;
 -----------------------------------
@@ -37,7 +37,7 @@ local title7 = { ROYAL_ARCHER , ROYAL_SPEARMAN , ROYAL_SQUIRE , ROYAL_SWORDSMAN 
 -----------------------------------
 
 function onTrade(player,npc,trade)
--- "Flyers for Regine" conditional script
+    -- "Flyers for Regine" conditional script
     local FlyerForRegine = player:getQuestStatus(SANDORIA,FLYERS_FOR_REGINE);
 
     if (FlyerForRegine == 1) then
@@ -54,7 +54,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x2A3,npcUtil.genTmask(player,title2),npcUtil.genTmask(player,title3),npcUtil.genTmask(player,title4),npcUtil.genTmask(player,title5),0,npcUtil.genTmask(player,title7),1   ,player:getGil());
+    player:startEvent(675,npcUtil.genTmask(player,title2),npcUtil.genTmask(player,title3),npcUtil.genTmask(player,title4),npcUtil.genTmask(player,title5),0,npcUtil.genTmask(player,title7),1   ,player:getGil());
 end;
 
 -----------------------------------
@@ -73,7 +73,7 @@ end;
 function onEventFinish(player,csid,option)
     -- printf("CSID: %u",csid);
     -- printf("RESULT: %u",option);
-    if (csid==0x2A3) then
+    if (csid==675) then
         if (option > 0 and option <29) then
             if (player:delGil(200)) then
                 player:setTitle( title2[option] )

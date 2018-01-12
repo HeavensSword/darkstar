@@ -2,7 +2,7 @@
 -- Area: Lufaise Meadows
 --  NPC: Ghost Talker, I.M.
 -- Border Conquest Guards
--- @pos 414.659 0.905 -52.417 24
+-- !pos 414.659 0.905 -52.417 24
 -----------------------------------
 package.loaded["scripts/zones/Lufaise_Meadows/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Lufaise_Meadows/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Lufaise_Meadows/TextIDs");
 
-local guardnation = BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 4;      -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = TAVNAZIANARCH;
 local csid        = 0x7ff8;

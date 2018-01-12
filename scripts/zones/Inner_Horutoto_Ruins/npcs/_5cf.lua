@@ -1,7 +1,7 @@
 -----------------------------------
---    Area: Inner Horutoto Ruins
---    NPC:  _5cf (Gate of Wind)
---  @pos -332 0 99 192
+-- Area: Inner Horutoto Ruins
+-- NPC:  _5cf (Gate of Wind)
+-- !pos -332 0 99 192
 -----------------------------------
 package.loaded["scripts/zones/Inner_Horutoto_Ruins/TextIDs"] = nil;
 -----------------------------------
@@ -20,19 +20,19 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    
+
     player:messageSpecial(DOOR_FIRMLY_CLOSED);
     return 1;
-    
-end; 
-        
+
+end;
+
 -----------------------------------
 -- onEventUpdate
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -40,6 +40,6 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;

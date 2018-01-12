@@ -1,24 +1,16 @@
 -----------------------------------------
---    ID: 4108
---    Lighting Cluster
---    Turn into a stack of lighting crystals
------------------------------------------
-
------------------------------------------
--- OnItemCheck
+-- ID: 4108
+-- Lighting Cluster
+-- Turn into a stack of lighting crystals
 -----------------------------------------
 
 function onItemCheck(target)
-local result = 0;
+    local result = 0;
     if (target:getFreeSlotsCount() == 0) then
         result = 308;
     end
-return result;
+    return result;
 end;
-
------------------------------------------
--- OnItemUse
------------------------------------------
 
 function onItemUse(target)
     target:addItem(4100,12);

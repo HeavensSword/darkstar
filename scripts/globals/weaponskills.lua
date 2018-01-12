@@ -8,18 +8,39 @@
 -- applications of accuracy mods ('Accuracy varies with TP.')
 -- applications of damage mods ('Damage varies with TP.')
 -- performance of the actual WS (rand numbers, etc)
+require("scripts/globals/magicburst");
 require("scripts/globals/status");
 require("scripts/globals/utils");
 require("scripts/globals/magic");
-require("scripts/globals/magicburst");
+require("scripts/globals/msg");
+
+REACTION_NONE = 0x00
+REACTION_MISS = 0x01
+REACTION_PARRY = 0x03
+REACTION_BLOCK = 0x04
+REACTION_HIT = 0x08
+REACTION_EVADE = 0x09
+REACTION_GUARD = 0x14
+
+SPECEFFECT_NONE = 0x00
+SPECEFFECT_BLOOD = 0x02
+SPECEFFECT_HIT = 0x10
+SPECEFFECT_RAISE = 0x11
+SPECEFFECT_RECOIL = 0x20
+SPECEFFECT_CRITICAL_HIT = 0x22
 
 
--- params contains: ftp100, ftp200, ftp300, str_wsc, dex_wsc, vit_wsc, int_wsc, mnd_wsc, canCrit, crit100, crit200, crit300, acc100, acc200, acc300, ignoresDef, ignore100, ignore200, ignore300, atkmulti
+-- params contains: ftp100, ftp200, ftp300, str_wsc, dex_wsc, vit_wsc, int_wsc, mnd_wsc, canCrit, crit100, crit200, crit300, acc100, acc200, acc300, ignoresDef, ignore100, ignore200, ignore300, atkmulti, kick
 function doPhysicalWeaponskill(attacker, target, wsID, tp, primary, action, taChar, params)
-
     local criticalHit = false;
-    local bonusTP = params.bonusTP or 0
-    local multiHitfTP = params.multiHitfTP or false
+    local bonusTP = 0;
+    if (params.bonusTP ~= nil) then
+        bonusTP = params.bonusTP;
+    end
+    local multiHitfTP = false;
+    if (params.multiHitfTP ~= nil) then
+        multiHitfTP = params.multiHitfTP;
+    end
     local bonusfTP, bonusacc = handleWSGorgetBelt(attacker);
     bonusacc = bonusacc + attacker:getMod(MOD_WSACC);
 
@@ -30,9 +51,14 @@ function doPhysicalWeaponskill(attacker, target, wsID, tp, primary, action, taCh
     local weaponDamage = attacker:getWeaponDmg();
     local weaponType = attacker:getWeaponSkillType(0);
 
-    if (weaponType == SKILL_H2H) then
+    if (weaponType == SKILL_H2H or weaponType == SKILL_NON) then
         local h2hSkill = ((attacker:getSkillLevel(1) * 0.11) + 3);
-        weaponDamage = attacker:getWeaponDmg()-3;
+
+        if (params.kick and attacker:hasStatusEffect(EFFECT_FOOTWORK)) then
+            weaponDamage = attacker:getMod(MOD_KICK_DMG) + 18; -- footwork formerly added 18 base dmg to all kicks, its effect on weaponskills was unchanged by update
+        else
+            weaponDamage = utils.clamp(attacker:getWeaponDmg()-3, 0);
+        end
 
         weaponDamage = weaponDamage + h2hSkill;
     end
@@ -71,7 +97,7 @@ function doPhysicalWeaponskill(attacker, target, wsID, tp, primary, action, taCh
 
     local critrate = 0;
     local nativecrit = 0;
-    
+
     if (params.canCrit) then -- work out critical hit ratios, by +1ing
         critrate = fTP(tp,params.crit100,params.crit200,params.crit300);
         -- add on native crit hit rate (guesstimated, it actually follows an exponential curve)
@@ -80,26 +106,25 @@ function doPhysicalWeaponskill(attacker, target, wsID, tp, primary, action, taCh
             critrate = critrate + (10 + flourisheffect:getSubPower()/2)/100;
         end
         nativecrit = (attacker:getStat(MOD_DEX) - target:getStat(MOD_AGI))*0.005; -- assumes +0.5% crit rate per 1 dDEX
+
+        if (nativecrit > 0.2) then -- caps only apply to base rate, not merits and mods
+            nativecrit = 0.2;
+        elseif (nativecrit < 0.05) then
+            nativecrit = 0.05;
+        end
+
         nativecrit = nativecrit + (attacker:getMod(MOD_CRITHITRATE)/100) + attacker:getMerit(MERIT_CRIT_HIT_RATE)/100 - target:getMerit(MERIT_ENEMY_CRIT_RATE)/100;
         if (attacker:hasStatusEffect(EFFECT_INNIN) and attacker:isBehind(target, 23)) then -- Innin acc boost attacker is behind target
             nativecrit = nativecrit + attacker:getStatusEffect(EFFECT_INNIN):getPower();
         end
 
-        if (nativecrit > 0.2) then -- caps!
-            nativecrit = 0.2;
-        elseif (nativecrit < 0.05) then
-            nativecrit = 0.05;
-        end
         critrate = critrate + nativecrit;
     end
-
-
-    local dmg = 0;
 
     -- Applying pDIF
     local pdif = generatePdif (cratio[1], cratio[2], true);
 
-    local firsthit = math.random();
+    local missChance = math.random();
     local finaldmg = 0;
     local hitrate = getHitRate(attacker,target,true,bonusacc);
     if (params.acc100~=0) then
@@ -109,72 +134,49 @@ function doPhysicalWeaponskill(attacker, target, wsID, tp, primary, action, taCh
         hitrate = hr;
     end
 
+    local dmg = base * ftp;
     local tpHitsLanded = 0;
-    if ((firsthit <= hitrate or isSneakValid or isAssassinValid or math.random() < attacker:getMod(MOD_ZANSHIN)/100) and
+    local shadowsAbsorbed = 0;
+    if ((missChance <= hitrate or isSneakValid or isAssassinValid or math.random() < attacker:getMod(MOD_ZANSHIN)/100) and
             not target:hasStatusEffect(EFFECT_PERFECT_DODGE) and not target:hasStatusEffect(EFFECT_ALL_MISS) ) then
-        dmg = base * ftp;
-        if (params.canCrit or isSneakValid or isAssassinValid) then
-            local critchance = math.random();
-            if (critchance <= critrate or hasMightyStrikes or isSneakValid or isAssassinValid) then -- crit hit!
-                local cpdif = generatePdif (ccritratio[1], ccritratio[2], true);
-                finaldmg = dmg * cpdif;
-                if (isSneakValid and attacker:getMainJob()==6) then -- have to add on DEX bonus if on THF main
-                    finaldmg = finaldmg + (attacker:getStat(MOD_DEX) * ftp * cpdif) * ((100+(attacker:getMod(MOD_AUGMENTS_SA)))/100);
-                end
-                if (isTrickValid and attacker:getMainJob()==6) then
-                    finaldmg = finaldmg + (attacker:getStat(MOD_AGI) * (1 + attacker:getMod(MOD_TRICK_ATK_AGI)/100) * ftp * cpdif) * ((100+(attacker:getMod(MOD_AUGMENTS_TA)))/100);
+        if not shadowAbsorb(target) then
+            if (params.canCrit or isSneakValid or isAssassinValid) then
+                local critchance = math.random();
+                if (critchance <= critrate or hasMightyStrikes or isSneakValid or isAssassinValid) then -- crit hit!
+                    local cpdif = generatePdif (ccritratio[1], ccritratio[2], true);
+                    finaldmg = dmg * cpdif;
+                    if (isSneakValid and attacker:getMainJob() == JOBS.THF) then -- have to add on DEX bonus if on THF main
+                        finaldmg = finaldmg + (attacker:getStat(MOD_DEX) * ftp * cpdif) * ((100+(attacker:getMod(MOD_AUGMENTS_SA)))/100);
+                    end
+                    if (isTrickValid and attacker:getMainJob() == JOBS.THF) then
+                        finaldmg = finaldmg + (attacker:getStat(MOD_AGI) * (1 + attacker:getMod(MOD_TRICK_ATK_AGI)/100) * ftp * cpdif) * ((100+(attacker:getMod(MOD_AUGMENTS_TA)))/100);
+                    end
+                else
+                    finaldmg = dmg * pdif;
+                    if (isTrickValid and attacker:getMainJob() == JOBS.THF) then
+                        finaldmg = finaldmg + (attacker:getStat(MOD_AGI) * (1 + attacker:getMod(MOD_TRICK_ATK_AGI)/100) * ftp * pdif) * ((100+(attacker:getMod(MOD_AUGMENTS_TA)))/100);
+                    end
                 end
             else
                 finaldmg = dmg * pdif;
-                if (isTrickValid and attacker:getMainJob()==6) then
+                if (isTrickValid and attacker:getMainJob() == JOBS.THF) then
                     finaldmg = finaldmg + (attacker:getStat(MOD_AGI) * (1 + attacker:getMod(MOD_TRICK_ATK_AGI)/100) * ftp * pdif) * ((100+(attacker:getMod(MOD_AUGMENTS_TA)))/100);
                 end
             end
+            tpHitsLanded = 1;
         else
-            finaldmg = dmg * pdif;
-            if (isTrickValid and attacker:getMainJob()==6) then
-                finaldmg = finaldmg + (attacker:getStat(MOD_AGI) * (1 + attacker:getMod(MOD_TRICK_ATK_AGI)/100) * ftp * pdif) * ((100+(attacker:getMod(MOD_AUGMENTS_TA)))/100);
-            end
+            shadowsAbsorbed = shadowsAbsorbed + 1
         end
-        tpHitsLanded = 1;
     end
 
     if not multiHitfTP then dmg = base end
-    
+
     if ((attacker:getOffhandDmg() ~= 0) and (attacker:getOffhandDmg() > 0 or weaponType==SKILL_H2H)) then
 
         local chance = math.random();
         if ((chance<=hitrate or math.random() < attacker:getMod(MOD_ZANSHIN)/100 or isSneakValid)
                 and not target:hasStatusEffect(EFFECT_PERFECT_DODGE) and not target:hasStatusEffect(EFFECT_ALL_MISS) ) then -- it hit
-            pdif = generatePdif (cratio[1], cratio[2], true);
-            if (params.canCrit) then
-                critchance = math.random();
-                if (critchance <= nativecrit or hasMightyStrikes) then -- crit hit!
-                    criticalHit = true;
-                    cpdif = generatePdif (ccritratio[1], ccritratio[2], true);
-                    finaldmg = finaldmg + dmg * cpdif;
-                else
-                    finaldmg = finaldmg + dmg * pdif;
-                end
-            else
-                finaldmg = finaldmg + dmg * pdif;
-            end
-            tpHitsLanded = tpHitsLanded + 1;
-        end
-    end
-
-    local numHits = getMultiAttacks(attacker, params.numHits);
-
-    local extraHitsLanded = 0;
-
-    if (numHits > 1) then
-
-        local hitsdone = 1;
-        while (hitsdone < numHits) do
-            local chance = math.random();
-            local targetHP = target:getHP();
-            if ((chance<=hitrate or math.random() < attacker:getMod(MOD_ZANSHIN)/100) and
-                    not target:hasStatusEffect(EFFECT_PERFECT_DODGE) and not target:hasStatusEffect(EFFECT_ALL_MISS) ) then  -- it hit
+            if not shadowAbsorb(target) then
                 pdif = generatePdif (cratio[1], cratio[2], true);
                 if (params.canCrit) then
                     critchance = math.random();
@@ -188,7 +190,45 @@ function doPhysicalWeaponskill(attacker, target, wsID, tp, primary, action, taCh
                 else
                     finaldmg = finaldmg + dmg * pdif;
                 end
-                extraHitsLanded = extraHitsLanded + 1;
+                tpHitsLanded = tpHitsLanded + 1;
+            else
+                shadowsAbsorbed = shadowsAbsorbed + 1
+            end
+        end
+    end
+
+    -- Store first hit bonus for use after other calcs are done..
+    local firstHitBonus = ((finaldmg * attacker:getMod(MOD_ALL_WSDMG_FIRST_HIT))/100);
+
+    local numHits = getMultiAttacks(attacker, params.numHits);
+    local extraHitsLanded = 0;
+
+    if (numHits > 1) then
+
+        local hitsdone = 1;
+        while (hitsdone < numHits) do
+            local chance = math.random();
+            local targetHP = target:getHP();
+            if ((chance<=hitrate or math.random() < attacker:getMod(MOD_ZANSHIN)/100) and
+                    not target:hasStatusEffect(EFFECT_PERFECT_DODGE) and not target:hasStatusEffect(EFFECT_ALL_MISS) ) then  -- it hit
+                if not shadowAbsorb(target) then
+                    pdif = generatePdif (cratio[1], cratio[2], true);
+                    if (params.canCrit) then
+                        critchance = math.random();
+                        if (critchance <= nativecrit or hasMightyStrikes) then -- crit hit!
+                            criticalHit = true;
+                            cpdif = generatePdif (ccritratio[1], ccritratio[2], true);
+                            finaldmg = finaldmg + dmg * cpdif;
+                        else
+                            finaldmg = finaldmg + dmg * pdif;
+                        end
+                    else
+                        finaldmg = finaldmg + dmg * pdif;
+                    end
+                    extraHitsLanded = extraHitsLanded + 1;
+                else
+                    shadowsAbsorbed = shadowsAbsorbed + 1
+                end
             end
             hitsdone = hitsdone + 1;
             if (finaldmg > targetHP) then
@@ -199,8 +239,23 @@ function doPhysicalWeaponskill(attacker, target, wsID, tp, primary, action, taCh
     finaldmg = finaldmg + souleaterBonus(attacker, (tpHitsLanded+extraHitsLanded));
     -- print("Landed " .. hitslanded .. "/" .. numHits .. " hits with hitrate " .. hitrate .. "!");
 
+
+    -- DMG Bonus for any WS
+    local bonusdmg = attacker:getMod(MOD_ALL_WSDMG_ALL_HITS);
+
+    -- Ws Specific DMG Bonus
+    if (attacker:getMod(MOD_WEAPONSKILL_DAMAGE_BASE + wsID) > 0) then
+        bonusdmg = bonusdmg + attacker:getMod(MOD_WEAPONSKILL_DAMAGE_BASE + wsID);
+    end
+
+    -- Add in bonusdmg
+    finaldmg = finaldmg * ((100 + bonusdmg)/100);
+    finaldmg = finaldmg + firstHitBonus;
+
+    -- Check for reductions from PDT
     finaldmg = target:physicalDmgTaken(finaldmg);
-    
+
+    -- Check for reductions from phys resistances
     if (weaponType == SKILL_H2H) then
         finaldmg = finaldmg * target:getMod(MOD_HTHRES) / 1000;
     elseif (weaponType == SKILL_DAG or weaponType == SKILL_POL) then
@@ -210,16 +265,10 @@ function doPhysicalWeaponskill(attacker, target, wsID, tp, primary, action, taCh
     else
         finaldmg = finaldmg * target:getMod(MOD_SLASHRES) / 1000;
     end
-    
-    if (attacker:getMod(MOD_WEAPONSKILL_DAMAGE_BASE + wsID) > 0) then
-        finaldmg = finaldmg * (100 + attacker:getMod(MOD_WEAPONSKILL_DAMAGE_BASE + wsID))/100
-    end
 
     attacker:delStatusEffectSilent(EFFECT_BUILDING_FLOURISH);
     finaldmg = finaldmg * WEAPON_SKILL_POWER
-    if tpHitsLanded + extraHitsLanded > 0 then
-        finaldmg = takeWeaponskillDamage(target, attacker, params, finaldmg, SLOT_MAIN, tpHitsLanded, (extraHitsLanded * 10) + bonusTP, taChar)
-    end
+    finaldmg = takeWeaponskillDamage(target, attacker, params, primary, finaldmg, SLOT_MAIN, tpHitsLanded, extraHitsLanded, shadowsAbsorbed, bonusTP, action, taChar)
     return finaldmg, criticalHit, tpHitsLanded, extraHitsLanded;
 end;
 
@@ -227,32 +276,54 @@ end;
 --         ele (ELE_FIRE), skill (SKILL_STF), includemab = true
 
 function doMagicWeaponskill(attacker, target, wsID, tp, primary, action, params)
-
-    local bonusTP = params.bonusTP or 0
+    local bonusTP = 0;
+    if (params.bonusTP ~= nil) then
+        bonusTP = params.bonusTP;
+    end
     local bonusfTP, bonusacc = handleWSGorgetBelt(attacker);
     bonusacc = bonusacc + attacker:getMod(MOD_WSACC);
 
     local fint = utils.clamp(8 + (attacker:getStat(MOD_INT) - target:getStat(MOD_INT)), -32, 32);
-    local dmg = attacker:getMainLvl() + 2 + (attacker:getStat(MOD_STR) * params.str_wsc + attacker:getStat(MOD_DEX) * params.dex_wsc +
-         attacker:getStat(MOD_VIT) * params.vit_wsc + attacker:getStat(MOD_AGI) * params.agi_wsc +
-         attacker:getStat(MOD_INT) * params.int_wsc + attacker:getStat(MOD_MND) * params.mnd_wsc +
-         attacker:getStat(MOD_CHR) * params.chr_wsc) + fint;
-    
-    -- Applying fTP multiplier
-    local ftp = fTP(tp,params.ftp100,params.ftp200,params.ftp300) + bonusfTP;
-    
-    dmg = dmg * ftp;
-    
-    dmg = addBonusesAbility(attacker, params.ele, target, dmg, params);
-    dmg = dmg * applyResistanceAbility(attacker,target,params.ele,params.skill, bonusacc);
-    dmg = target:magicDmgTaken(dmg);
-    dmg = adjustForTarget(target,dmg,params.ele);
-    
-    if (attacker:getMod(MOD_WEAPONSKILL_DAMAGE_BASE + wsID) > 0) then
-        dmg = dmg * (100 + attacker:getMod(MOD_WEAPONSKILL_DAMAGE_BASE + wsID))/100
+    local dmg = 0
+    local shadowsAbsorbed = 0
+
+    if not shadowAbsorb(target) then
+
+        dmg = attacker:getMainLvl() + 2 + (attacker:getStat(MOD_STR) * params.str_wsc + attacker:getStat(MOD_DEX) * params.dex_wsc +
+             attacker:getStat(MOD_VIT) * params.vit_wsc + attacker:getStat(MOD_AGI) * params.agi_wsc +
+             attacker:getStat(MOD_INT) * params.int_wsc + attacker:getStat(MOD_MND) * params.mnd_wsc +
+             attacker:getStat(MOD_CHR) * params.chr_wsc) + fint;
+
+        -- Applying fTP multiplier
+        local ftp = fTP(tp,params.ftp100,params.ftp200,params.ftp300) + bonusfTP;
+
+        dmg = dmg * ftp;
+
+        dmg = addBonusesAbility(attacker, params.ele, target, dmg, params);
+        dmg = dmg * applyResistanceAbility(attacker,target,params.ele,params.skill, bonusacc);
+        dmg = target:magicDmgTaken(dmg);
+        dmg = adjustForTarget(target,dmg,params.ele);
+
+        -- Add first hit bonus..No such thing as multihit magic ws is there?
+        local firstHitBonus = ((dmg * attacker:getMod(MOD_ALL_WSDMG_FIRST_HIT))/100);
+
+        -- DMG Bonus for any WS
+        local bonusdmg = attacker:getMod(MOD_ALL_WSDMG_ALL_HITS);
+
+        -- Ws Specific DMG Bonus
+        if (attacker:getMod(MOD_WEAPONSKILL_DAMAGE_BASE + wsID) > 0) then
+            bonusdmg = bonusdmg + attacker:getMod(MOD_WEAPONSKILL_DAMAGE_BASE + wsID);
+        end
+
+        -- Add in bonusdmg
+        dmg = dmg * ((100 + bonusdmg)/100);
+        dmg = dmg + firstHitBonus;
+
+        dmg = dmg * WEAPON_SKILL_POWER
+    else
+        shadowsAbsorbed = shadowsAbsorbed + 1
     end
-    dmg = dmg * WEAPON_SKILL_POWER
-    dmg = takeWeaponskillDamage(target, attacker, params, dmg, SLOT_MAIN, 1, bonusTP, nil)
+    dmg = takeWeaponskillDamage(target, attacker, params, primary, dmg, SLOT_MAIN, 1, 0, shadowsAbsorbed, bonusTP, action, nil)
     return dmg, false, 1, 0;
 end
 
@@ -260,12 +331,11 @@ function souleaterBonus(attacker, numhits)
     if attacker:hasStatusEffect(EFFECT_SOULEATER) then
         local damage = 0;
         local percent = 0.1;
-        if attacker:getMainJob() ~= 8 then
+        if attacker:getMainJob() ~= JOBS.DRK then
             percent = percent / 2;
         end
-        if attacker:getEquipID(SLOT_HEAD) == 12516 or attacker:getEquipID(SLOT_HEAD) == 15232 or attacker:getEquipID(SLOT_BODY) == 14409 or attacker:getEquipID(SLOT_LEGS) == 15370 then
-            percent = percent + 0.02;
-        end
+        percent = percent + math.min(0.02, 0.01 * attacker:getMod(MOD_SOULEATER_EFFECT));
+
         local hitscounted = 0;
         while (hitscounted < numhits) do
             local health = attacker:getHP();
@@ -315,9 +385,12 @@ function getHitRate(attacker,target,capHitRate,bonus)
     if (target:hasStatusEffect(EFFECT_YONIN) and attacker:isFacing(target, 23)) then -- Yonin evasion boost if attacker is facing target
         bonus = bonus - target:getStatusEffect(EFFECT_YONIN):getPower();
     end
+    if (attacker:hasTrait(76) and attacker:isBehind(target, 23)) then --TRAIT_AMBUSH
+        bonus = bonus + attacker:getMerit(MERIT_AMBUSH);
+    end
 
     acc = acc + bonus;
-    
+
     if (attacker:getMainLvl() > target:getMainLvl()) then -- acc bonus!
         acc = acc + ((attacker:getMainLvl()-target:getMainLvl())*4);
     elseif (attacker:getMainLvl() < target:getMainLvl()) then -- acc penalty :(
@@ -359,6 +432,9 @@ function getRangedHitRate(attacker,target,capHitRate,bonus)
     if (target:hasStatusEffect(EFFECT_YONIN) and target:isFacing(attacker, 23)) then -- Yonin evasion boost if defender is facing attacker
         bonus = bonus - target:getStatusEffect(EFFECT_YONIN):getPower();
     end
+    if (attacker:hasTrait(76) and attacker:isBehind(target, 23)) then --TRAIT_AMBUSH
+        bonus = bonus + attacker:getMerit(MERIT_AMBUSH);
+    end
 
     acc = acc + bonus;
 
@@ -380,7 +456,6 @@ function getRangedHitRate(attacker,target,capHitRate,bonus)
     hitrate = hitrate+hitdiff;
     hitrate = hitrate/100;
 
-
     -- Applying hitrate caps
     if (capHitRate) then -- this isn't capped for when acc varies with tp, as more penalties are due
         if (hitrate>0.95) then
@@ -394,14 +469,16 @@ function getRangedHitRate(attacker,target,capHitRate,bonus)
 end;
 
 function fTP(tp,ftp1,ftp2,ftp3)
-    if tp < 1000 then tp = 1000 end
-    if (tp>=1000 and tp<2000) then
+    if (tp < 1000) then
+        tp = 1000;
+    end
+    if (tp >= 1000 and tp < 2000) then
         return ftp1 + ( ((ftp2-ftp1)/1000) * (tp-1000));
-    elseif (tp>=2000 and tp<=3000) then
+    elseif (tp >= 2000 and tp <= 3000) then
         -- generate a straight line between ftp2 and ftp3 and find point @ tp
         return ftp2 + ( ((ftp3-ftp2)/1000) * (tp-2000));
     else
-        print("fTP error: TP value is not between 100-300!");
+        print("fTP error: TP value is not between 1000-3000!");
     end
     return 1; -- no ftp mod
 end;
@@ -510,7 +587,7 @@ function cMeleeRatio(attacker, defender, params, ignoredDef)
     critbonus = utils.clamp(critbonus, 0, 100);
     pdifcrit[1] = pdifmin * ((100 + critbonus)/100);
     pdifcrit[2] = pdifmax * ((100 + critbonus)/100);
-    
+
     return pdif, pdifcrit;
 end;
 
@@ -648,10 +725,15 @@ function getAlpha(level)
 end;
 
  -- params contains: ftp100, ftp200, ftp300, str_wsc, dex_wsc, vit_wsc, int_wsc, mnd_wsc, canCrit, crit100, crit200, crit300, acc100, acc200, acc300, ignoresDef, ignore100, ignore200, ignore300, atkmulti
- function doRangedWeaponskill(attacker, target, wsID, params, tp, primary)
-
-    local bonusTP = params.bonusTP or 0
-    local multiHitfTP = params.multiHitfTP or false
+ function doRangedWeaponskill(attacker, target, wsID, params, tp, primary, action)
+    local bonusTP = 0;
+    if (params.bonusTP ~= nil) then
+        bonusTP = params.bonusTP;
+    end
+    local multiHitfTP = false;
+    if (params.multiHitfTP ~= nil) then
+        multiHitfTP = params.multiHitfTP;
+    end
     local bonusfTP, bonusacc = handleWSGorgetBelt(attacker);
     bonusacc = bonusacc + attacker:getMod(MOD_WSACC);
 
@@ -684,19 +766,20 @@ end;
         critrate = fTP(tp,params.crit100,params.crit200,params.crit300);
         -- add on native crit hit rate (guesstimated, it actually follows an exponential curve)
         local nativecrit = (attacker:getStat(MOD_DEX) - target:getStat(MOD_AGI))*0.005; -- assumes +0.5% crit rate per 1 dDEX
+
+        if (nativecrit > 0.2) then -- caps only apply to base rate, not merits and mods
+            nativecrit = 0.2;
+        elseif (nativecrit < 0.05) then
+            nativecrit = 0.05;
+        end
+
         nativecrit = nativecrit + (attacker:getMod(MOD_CRITHITRATE)/100) + attacker:getMerit(MERIT_CRIT_HIT_RATE)/100 - target:getMerit(MERIT_ENEMY_CRIT_RATE)/100;
         if (attacker:hasStatusEffect(EFFECT_INNIN) and attacker:isBehind(target, 23)) then -- Innin crit boost if attacker is behind target
             nativecrit = nativecrit + attacker:getStatusEffect(EFFECT_INNIN):getPower();
         end
 
-        if (nativecrit > 0.2) then -- caps!
-            nativecrit = 0.2;
-        elseif (nativecrit < 0.05) then
-            nativecrit = 0.05;
-        end
         critrate = critrate + nativecrit;
     end
-
 
     local dmg = base * ftp;
 
@@ -704,7 +787,7 @@ end;
     local pdif = generatePdif (cratio[1],cratio[2], false);
 
     -- First hit has 95% acc always. Second hit + affected by hit rate.
-    local firsthit = math.random();
+    local missChance = math.random();
     local finaldmg = 0;
     local hitrate = getRangedHitRate(attacker,target,true,bonusacc);
     if (params.acc100~=0) then
@@ -715,21 +798,29 @@ end;
     end
 
     local tpHitsLanded = 0;
-    if (firsthit <= hitrate) then
-        if (params.canCrit) then
-            local critchance = math.random();
-            if (critchance <= critrate or hasMightyStrikes) then -- crit hit!
-                crit = true
-                local cpdif = generatePdif (ccritratio[1], ccritratio[2], false);
-                finaldmg = dmg * cpdif;
+    local shadowsAbsorbed = 0
+    if (missChance <= hitrate) then
+        if not shadowAbsorb(target) then
+            if (params.canCrit) then
+                local critchance = math.random();
+                if (critchance <= critrate or hasMightyStrikes) then -- crit hit!
+                    crit = true
+                    local cpdif = generatePdif (ccritratio[1], ccritratio[2], false);
+                    finaldmg = dmg * cpdif;
+                else
+                    finaldmg = dmg * pdif;
+                end
             else
                 finaldmg = dmg * pdif;
             end
+            tpHitsLanded = 1;
         else
-            finaldmg = dmg * pdif;
+            shadowsAbsorbed = shadowsAbsorbed + 1
         end
-        tpHitsLanded = 1;
     end
+
+    -- Store first hit bonus for use after other calcs are done..
+    local firstHitBonus = ((finaldmg * attacker:getMod(MOD_ALL_WSDMG_FIRST_HIT))/100);
 
     local numHits = params.numHits;
 
@@ -745,37 +836,48 @@ end;
         while (hitsdone < numHits) do
             chance = math.random();
             if (chance<=hitrate) then -- it hit
-                pdif = generatePdif (cratio[1],cratio[2], false);
-                if (canCrit) then
-                    critchance = math.random();
-                    if (critchance <= critrate or hasMightyStrikes) then -- crit hit!
-                        cpdif = generatePdif (ccritratio[1], ccritratio[2], false);
-                        finaldmg = finaldmg + dmg * cpdif;
+                if not shadowAbsorb(target) then
+                    pdif = generatePdif (cratio[1],cratio[2], false);
+                    if (canCrit) then
+                        critchance = math.random();
+                        if (critchance <= critrate or hasMightyStrikes) then -- crit hit!
+                            cpdif = generatePdif (ccritratio[1], ccritratio[2], false);
+                            finaldmg = finaldmg + dmg * cpdif;
+                        else
+                            finaldmg = finaldmg + dmg * pdif;
+                        end
                     else
-                        finaldmg = finaldmg + dmg * pdif;
+                        finaldmg = finaldmg + dmg * pdif; -- NOTE: not using 'dmg' since fTP is 1.0 for subsequent hits!!
                     end
+                    extraHitsLanded = extraHitsLanded + 1;
                 else
-                    finaldmg = finaldmg + dmg * pdif; -- NOTE: not using 'dmg' since fTP is 1.0 for subsequent hits!!
+                    shadowsAbsorbed = shadowsAbsorbed + 1
                 end
-                extraHitsLanded = extraHitsLanded + 1;
             end
             hitsdone = hitsdone + 1;
         end
     end
     -- print("Landed " .. hitslanded .. "/" .. numHits .. " hits with hitrate " .. hitrate .. "!");
 
+    -- DMG Bonus for any WS
+    local bonusdmg = attacker:getMod(MOD_ALL_WSDMG_ALL_HITS);
+
+    -- Ws Specific DMG Bonus
+    if (attacker:getMod(MOD_WEAPONSKILL_DAMAGE_BASE + wsID) > 0) then
+        bonusdmg = bonusdmg + attacker:getMod(MOD_WEAPONSKILL_DAMAGE_BASE + wsID);
+    end
+
+    -- Add in bonusdmg
+    finaldmg = finaldmg * ((100 + bonusdmg)/100);
+    finaldmg = finaldmg + firstHitBonus;
+
+    -- Check for reductions
     finaldmg = target:rangedDmgTaken(finaldmg);
     finaldmg = finaldmg * target:getMod(MOD_PIERCERES) / 1000;
 
-    if (attacker:getMod(MOD_WEAPONSKILL_DAMAGE_BASE + wsID) > 0) then
-        finaldmg = finaldmg * (100 + attacker:getMod(MOD_WEAPONSKILL_DAMAGE_BASE + wsID))/100
-    end
-
     finaldmg = finaldmg * WEAPON_SKILL_POWER
-    if tpHitsLanded + extraHitsLanded > 0 then
-        finaldmg = takeWeaponskillDamage(target, attacker, params, finaldmg, SLOT_RANGED, tpHitsLanded, (extraHitsLanded * 10) + bonusTP, nil)
-    end
-    return finaldmg, crit, tpHitsLanded, extraHitsLanded;
+    finaldmg = takeWeaponskillDamage(target, attacker, params, primary, finaldmg, SLOT_RANGED, tpHitsLanded, extraHitsLanded, shadowsAbsorbed, bonusTP, action, nil)
+    return finaldmg, crit, tpHitsLanded, extraHitsLanded, shadowsAbsorbed;
 end;
 
 function getMultiAttacks(attacker, numHits)
@@ -847,7 +949,7 @@ function getStepAnimation(skill)
         return 23;
     else
         return 0;
-    end    
+    end
 end
 
 function getFlourishAnimation(skill)
@@ -873,12 +975,43 @@ function getFlourishAnimation(skill)
         return 33;
     else
         return 0;
-    end    
+    end
 end
 
-function takeWeaponskillDamage(defender, attacker, params, finaldmg, slot, tpHitsLanded, bonusTP, taChar)
+function takeWeaponskillDamage(defender, attacker, params, primary, finaldmg, slot, tpHitsLanded, extraHitsLanded, shadowsAbsorbed, bonusTP, action, taChar)
+    if tpHitsLanded + extraHitsLanded > 0 then
+        if finaldmg >= 0 then
+            if primary then
+                action:messageID(defender:getID(), msgBasic.DAMAGE)
+            else
+                action:messageID(defender:getID(), msgBasic.DAMAGE_SECONDARY)
+            end
+
+            if finaldmg > 0 then
+                action:reaction(defender:getID(), REACTION_HIT)
+                action:speceffect(defender:getID(), SPECEFFECT_RECOIL)
+            end
+        else
+            if primary then
+                action:messageID(defender:getID(), msgBasic.SELF_HEAL)
+            else
+                action:messageID(defender:getID(), msgBasic.SELF_HEAL_SECONDARY)
+            end
+        end
+        action:param(defender:getID(), finaldmg)
+    elseif shadowsAbsorbed > 0 then
+        action:messageID(defender:getID(), msgBasic.SHADOW_ABSORB)
+        action:param(defender:getID(), shadowsAbsorbed)
+    else
+        if primary then
+            action:messageID(defender:getID(), msgBasic.SKILL_MISS)
+        else
+            action:messageID(defender:getID(), msgBasic.EVADES)
+        end
+        action:reaction(defender:getID(), REACTION_EVADE)
+    end
     local targetTPMult = params.targetTPMult or 1
-    finaldmg = defender:takeWeaponskillDamage(attacker, finaldmg, slot, tpHitsLanded, bonusTP, targetTPMult)
+    finaldmg = defender:takeWeaponskillDamage(attacker, finaldmg, slot, primary, tpHitsLanded, (extraHitsLanded * 10) + bonusTP, targetTPMult)
     local enmityEntity = taChar or attacker;
     if (params.overrideCE and params.overrideVE) then
         defender:addEnmity(enmityEntity, params.overrideCE, params.overrideVE)
@@ -911,15 +1044,18 @@ function applyAftermathEffect(player, tp, params)
     end
 
     local apply_power = 0
-    if (tp == 3000) then
-        player:addStatusEffect(EFFECT_AFTERMATH_LV3, params.power.lv3, 0, 
-            params.duration.lv3, 0, params.subpower.lv3)
-    elseif (tp >= 2000) then
-        apply_power = params.power.lv2 + ((tp - 2000) / (100 / params.power.lv2_inc))
+    if (tp == 3000 and shouldApplyAftermath(player, EFFECT_AFTERMATH_LV3)) then
+        player:delStatusEffect(EFFECT_AFTERMATH_LV1);
+        player:delStatusEffect(EFFECT_AFTERMATH_LV2);
+        player:addStatusEffect(EFFECT_AFTERMATH_LV3, params.power.lv3, 0,
+            params.duration.lv3, 0, params.subpower.lv3);
+    elseif (tp >= 2000 and shouldApplyAftermath(player, EFFECT_AFTERMATH_LV2)) then
+        player:delStatusEffect(EFFECT_AFTERMATH_LV1);
+        apply_power = math.floor(params.power.lv2 + ((tp - 2000) / (100 / params.power.lv2_inc)))
         player:addStatusEffect(EFFECT_AFTERMATH_LV2, apply_power, 0,
             params.duration.lv2, 0, params.subpower.lv2);
-    elseif (tp >= 1000) then
-        apply_power = params.power.lv1 + ((tp - 1000) / (100 / params.power.lv1_inc))
+    elseif (tp >= 1000 and shouldApplyAftermath(player, EFFECT_AFTERMATH_LV1)) then
+        apply_power = math.floor(params.power.lv1 + ((tp - 1000) / (100 / params.power.lv1_inc)))
         player:addStatusEffect(EFFECT_AFTERMATH_LV1, apply_power, 0,
             params.duration.lv1, 0, params.subpower.lv1);
     end
@@ -933,7 +1069,7 @@ function initAftermathParams()
 
     params.power.lv1 = 10
     params.power.lv2 = 20
-    params.power.lv3 = 45
+    params.power.lv3 = 40
 
     params.power.lv1_inc = 1
     params.power.lv2_inc = 4
@@ -942,11 +1078,22 @@ function initAftermathParams()
     params.subpower.lv2 = 1
     params.subpower.lv3 = 1
 
-    params.duration.lv1 = 180
-    params.duration.lv2 = 180
+    params.duration.lv1 = 60
+    params.duration.lv2 = 90
     params.duration.lv3 = 120
 
     return params
+end;
+
+function shouldApplyAftermath(player, effect)
+    local result = true;
+    if (effect == EFFECT_AFTERMATH_LV1 and (player:hasStatusEffect(EFFECT_AFTERMATH_LV2) or player:hasStatusEffect(EFFECT_AFTERMATH_LV3))) then
+        result = false;
+    elseif (effect == EFFECT_AFTERMATH_LV2 and player:hasStatusEffect(EFFECT_AFTERMATH_LV3)) then
+        result = false;
+    end;
+
+    return result;
 end;
 
 function handleWSGorgetBelt(attacker)
@@ -970,6 +1117,11 @@ function handleWSGorgetBelt(attacker)
             end
         end
 
+        if (neck == 27510) then -- Fotia Gorget
+            accBonus = accBonus + 10;
+            ftpBonus = ftpBonus + 0.1;
+        end
+
         for i,v in ipairs(elementalBelt) do
             if (belt == v) then
                 if (doesElementMatchWeaponskill(i, SCProp1) or doesElementMatchWeaponskill(i, SCProp2) or doesElementMatchWeaponskill(i, SCProp3)) then
@@ -979,6 +1131,45 @@ function handleWSGorgetBelt(attacker)
                 break;
             end
         end
+
+        if (belt == 28420) then -- Fotia Belt
+            accBonus = accBonus + 10;
+            ftpBonus = ftpBonus + 0.1;
+        end
     end
     return ftpBonus, accBonus;
 end;
+
+function shadowAbsorb(target)
+    local targShadows = target:getMod(MOD_UTSUSEMI)
+    local shadowType = MOD_UTSUSEMI
+
+    if targShadows == 0 then
+        if math.random() < 0.8 then
+            targShadows = target:getMod(MOD_BLINK)
+            shadowType = MOD_BLINK
+        end
+    end
+
+    if targShadows > 0 then
+        if shadowType == MOD_UTSUSEMI then
+            local effect = target:getStatusEffect(EFFECT_COPY_IMAGE)
+            if effect then
+                if targShadows - 1 == 1 then
+                    effect:setIcon(EFFECT_COPY_IMAGE)
+                elseif targShadows - 1 == 2 then
+                    effect:setIcon(EFFECT_COPY_IMAGE_2)
+                elseif targShadows - 1 == 3 then
+                    effect:setIcon(EFFECT_COPY_IMAGE_3)
+                end
+            end
+        end
+        target:setMod(shadowType, targShadows - 1)
+        if targShadows - 1 == 0 then
+            target:delStatusEffect(EFFECT_COPY_IMAGE)
+            target:delStatusEffect(EFFECT_COPY_BLINK)
+        end
+        return true
+    end
+    return false
+end

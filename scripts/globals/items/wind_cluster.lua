@@ -1,24 +1,16 @@
 -----------------------------------------
---    ID: 4106
---    Wind Cluster
---    Turn into a stack of wind crystals
------------------------------------------
-
------------------------------------------
--- OnItemCheck
+-- ID: 4106
+-- Wind Cluster
+-- Turn into a stack of wind crystals
 -----------------------------------------
 
 function onItemCheck(target)
-local result = 0;
+    local result = 0;
     if (target:getFreeSlotsCount() == 0) then
         result = 308;
     end
-return result;
+    return result;
 end;
-
------------------------------------------
--- OnItemUse
------------------------------------------
 
 function onItemUse(target)
     target:addItem(4098,12);

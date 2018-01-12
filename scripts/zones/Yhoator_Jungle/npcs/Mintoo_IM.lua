@@ -2,7 +2,7 @@
 -- Area: Yhoator Jungle
 --  NPC: Mintoo, I.M.
 -- Outpost Conquest Guards
--- @pos 200.254 -1 -80.324 124
+-- !pos 200.254 -1 -80.324 124
 -----------------------------------
 package.loaded["scripts/zones/Yhoator_Jungle/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/Yhoator_Jungle/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/Yhoator_Jungle/TextIDs");
 
-local guardnation = BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_BASTOK; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 3;      -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = ELSHIMOUPLANDS;
 local csid        = 0x7ff9;

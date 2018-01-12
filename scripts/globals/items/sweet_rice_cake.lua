@@ -10,26 +10,18 @@
 -- HP Recovered While Healing 2
 -- MP Recovered While Healing 2
 -- Evasion 5
--- Resist Silence 5
+-- Resist Silence 4
 -----------------------------------------
-
 require("scripts/globals/status");
-
------------------------------------------
--- OnItemCheck
 -----------------------------------------
 
 function onItemCheck(target)
-local result = 0;
+    local result = 0;
     if (target:hasStatusEffect(EFFECT_FOOD) == true or target:hasStatusEffect(EFFECT_FIELD_SUPPORT_FOOD) == true) then
         result = 246;
     end
-return result;
+    return result;
 end;
-
------------------------------------------
--- OnItemUse
------------------------------------------
 
 function onItemUse(target)
     target:addStatusEffect(EFFECT_FOOD,0,0,1800,4270);
@@ -47,14 +39,10 @@ function onEffectGain(target,effect)
     target:addMod(MOD_HPHEAL, 2);
     target:addMod(MOD_MPHEAL, 2);
     target:addMod(MOD_EVA, 5);
-    target:addMod(MOD_SILENCERES, 5);
+    target:addMod(MOD_SILENCERES, 4);
 end;
 
------------------------------------------
--- onEffectLose Action
------------------------------------------
-
-function onEffectLose(target,effect)
+function onEffectLose(target, effect)
     target:delMod(MOD_MP, 17);
     target:delMod(MOD_VIT, 2);
     target:delMod(MOD_INT, 3);
@@ -62,5 +50,5 @@ function onEffectLose(target,effect)
     target:delMod(MOD_HPHEAL, 2);
     target:delMod(MOD_MPHEAL, 2);
     target:delMod(MOD_EVA, 5);
-    target:delMod(MOD_SILENCERES, 5);
+    target:delMod(MOD_SILENCERES, 4);
 end;

@@ -2,9 +2,9 @@
 --  Area: Windurst Waters (S)
 --   NPC: Quartermaster
 --  Type: Standard NPC
--- @zone: 94
---  @pos -60.200 -4.7 32.500
--- 
+-- @zone 94
+-- !pos -60.200 -4.7 32.500
+--
 -- Auto-Script: Requires Verification (Verified by Brawndo)
 -----------------------------------
 package.loaded["scripts/zones/Windurst_Waters_[S]/TextIDs"] = nil;
@@ -22,7 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x00c9);
+    player:startEvent(201);
 end;
 
 -----------------------------------

@@ -2,7 +2,7 @@
 --  Area: Port Bastok
 --  NPC: Flaco
 --  Fame Checker
---  @zone: 236
+--  @zone 236
 -----------------------------------
 
 require("scripts/globals/quests");
@@ -20,7 +20,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    player:startEvent(0x00D2 + player:getFameLevel(BASTOK));
+    player:startEvent(210 + player:getFameLevel(BASTOK));
 end;
 
 -----------------------------------
@@ -28,8 +28,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -37,6 +37,6 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;

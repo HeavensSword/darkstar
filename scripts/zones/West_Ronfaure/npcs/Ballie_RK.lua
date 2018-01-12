@@ -2,7 +2,7 @@
 -- Area: West Ronfaure
 --  NPC: Ballie, R.K.
 -- Type: Border Conquest Guards
--- @pos -560.292 -0.961 -576.655 100
+-- !pos -560.292 -0.961 -576.655 100
 -----------------------------------
 package.loaded["scripts/zones/West_Ronfaure/TextIDs"] = nil;
 -----------------------------------
@@ -10,7 +10,7 @@ package.loaded["scripts/zones/West_Ronfaure/TextIDs"] = nil;
 require("scripts/globals/conquest");
 require("scripts/zones/West_Ronfaure/TextIDs");
 
-local guardnation = SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
+local guardnation = NATION_SANDORIA; -- SANDORIA, BASTOK, WINDURST, 4 = jeuno
 local guardtype   = 4;        -- 1: city, 2: foreign, 3: outpost, 4: border
 local region      = RONFAURE;
 local csid        = 0x7ffa;

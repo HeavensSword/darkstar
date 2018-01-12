@@ -2,7 +2,7 @@
 --  Area: Port Bastok
 --  NPC: Ilita
 --  Linkshell merchant
---  @pos -142 -1 -25 236
+-- !pos -142 -1 -25 236
 -----------------------------------
 package.loaded["scripts/zones/Southern_San_dOria/TextIDs"] = nil;
 -----------------------------------
@@ -25,7 +25,7 @@ function onTrigger(player,npc)
 
 player:showText(npc,PAUNELIE_SHOP_DIALOG,513);
 
-stock = 
+stock =
 {
     0x0200,8000, -- Linkshell
     0x3f9d,375   -- Pendant Compass
@@ -38,8 +38,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -47,9 +47,7 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
-
-
 
