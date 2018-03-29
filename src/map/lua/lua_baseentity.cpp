@@ -88,6 +88,7 @@
 #include "../packets/char_job_extra.h"
 #include "../packets/char_equip.h"
 #include "../packets/char_health.h"
+#include "../packets/char_mounts.h"
 #include "../packets/char_recast.h"
 #include "../packets/char_skills.h"
 #include "../packets/char_spells.h"
@@ -157,25 +158,6 @@ CLuaBaseEntity::CLuaBaseEntity(lua_State* L)
 CLuaBaseEntity::CLuaBaseEntity(CBaseEntity* PEntity)
 {
     m_PBaseEntity = PEntity;
-}
-
-/************************************************************************
-*  Function: SendRevision()
-*  Purpose : Sends the current Git version to the character via message
-*  Example : player:SendRevision()
-*  Notes   :
-************************************************************************/
-
-inline int32 CLuaBaseEntity::SendRevision(lua_State* L)
-{
-    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
-    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
-    char version[100];
-    strcpy(version, "Revision is: ");
-    strcat(version, get_git_revision());
-    ((CCharEntity*)m_PBaseEntity)->pushPacket(new CChatMessagePacket((CCharEntity*)m_PBaseEntity, MESSAGE_SYSTEM_1, version));
-
-    return 0;
 }
 
 /************************************************************************
@@ -3435,8 +3417,7 @@ inline int32 CLuaBaseEntity::confirmTrade(lua_State *L)
         if (PChar->TradeContainer->getInvSlotID(slotID) != 0xFF && PChar->TradeContainer->getConfirmedStatus(slotID))
         {
             uint8 invSlotID = PChar->TradeContainer->getInvSlotID(slotID);
-            auto quantity = (int32)std::max<uint32>(PChar->TradeContainer->getQuantity(slotID), PChar->TradeContainer->getConfirmedStatus(slotID));
-
+            auto quantity = (int32)std::min<uint32>(PChar->TradeContainer->getQuantity(slotID), PChar->TradeContainer->getConfirmedStatus(slotID));
             charutils::UpdateItem(PChar, LOC_INVENTORY, invSlotID, -quantity);
         }
     }
@@ -6134,10 +6115,15 @@ inline int32 CLuaBaseEntity::addKeyItem(lua_State *L)
     CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
 
     uint16 KeyItemID = (uint16)lua_tointeger(L, 1);
+    uint8 table = KeyItemID >> 9;
 
     charutils::addKeyItem(PChar, KeyItemID);
-    PChar->pushPacket(new CKeyItemsPacket(PChar, (KEYS_TABLE)(KeyItemID >> 9)));
+    PChar->pushPacket(new CKeyItemsPacket(PChar, (KEYS_TABLE)table));
 
+    if (table == 6)
+    {
+        PChar->pushPacket(new CCharMountsPacket(PChar));
+    }
     charutils::SaveKeyItems(PChar);
     return 0;
 }
@@ -9958,7 +9944,7 @@ int32 CLuaBaseEntity::transferEnmity(lua_State* L)
     {
         for (auto&& mob_pair : PIterEntity->SpawnMOBList)
         {
-            if (distance(mob_pair.second->loc.p, PEntity->loc.p) < range)
+            if (distanceSquared(mob_pair.second->loc.p, PEntity->loc.p) < (range * range))
             {
                 battleutils::TransferEnmity(static_cast<CBattleEntity*>(PEntity),
                     static_cast<CBattleEntity*>(m_PBaseEntity),static_cast<CMobEntity*>(mob_pair.second), percent);
@@ -10534,21 +10520,23 @@ inline int32 CLuaBaseEntity::stealStatusEffect(lua_State *L)
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
     DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype == TYPE_NPC);
 
-    CStatusEffect* PStatusEffect = ((CBattleEntity*)m_PBaseEntity)->StatusEffectContainer->StealStatusEffect();
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isuserdata(L, 1));
+    CLuaBaseEntity* PEntity = Lunar<CLuaBaseEntity>::check(L, 1);
 
-    if (PStatusEffect == nullptr)
-        lua_pushnil(L);
+    EFFECTFLAG flag = EFFECTFLAG_DISPELABLE;
+    if (!lua_isnil(L, 2) && lua_isnumber(L, 2))
+        flag = (EFFECTFLAG)lua_tointeger(L, 2);
+
+    if (CStatusEffect* PStatusEffect = ((CBattleEntity*)PEntity->m_PBaseEntity)->StatusEffectContainer->StealStatusEffect(flag))
+    {
+        ((CBattleEntity*)m_PBaseEntity)->StatusEffectContainer->AddStatusEffect(PStatusEffect);
+        lua_pushinteger(L, PStatusEffect->GetStatusID());
+    }
     else
     {
-        lua_getglobal(L, CLuaStatusEffect::className);
-        lua_pushstring(L, "new");
-        lua_gettable(L, -2);
-        lua_insert(L, -2);
-        lua_pushlightuserdata(L, (void*)PStatusEffect);
-        lua_pcall(L, 2, 1, 0);
-
-        delete PStatusEffect;
+        lua_pushinteger(L, 0);
     }
+
     return 1;
 }
 
@@ -10698,9 +10686,9 @@ inline int32 CLuaBaseEntity::addCorsairRoll(lua_State *L)
         (EFFECT)lua_tointeger(L, 3), // Effect ID
         (uint16)lua_tointeger(L, 3), // Effect Icon (Associated with ID)
         (uint16)lua_tointeger(L, 4), // Power
-        (uint16)lua_tointeger(L, 5), // Tick
-        (uint16)lua_tointeger(L, 6), // Duration
-        (n >= 7 ? (uint16)lua_tointeger(L, 7) : 0),  // SubID or 0
+        (uint32)lua_tointeger(L, 5), // Tick
+        (uint32)lua_tointeger(L, 6), // Duration
+        (n >= 7 ? (uint32)lua_tointeger(L, 7) : 0),  // SubID or 0
         (n >= 8 ? (uint16)lua_tointeger(L, 8) : 0),  // SubPower or 0
         (n >= 9 ? (uint16)lua_tointeger(L, 9) : 0)); // Tier or 0
     uint8 maxRolls = 2;
@@ -13591,8 +13579,6 @@ const char CLuaBaseEntity::className[] = "CBaseEntity";
 
 Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
 {
-
-    LUNAR_DECLARE_METHOD(CLuaBaseEntity,SendRevision),
 
     // Messaging System
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,showText),

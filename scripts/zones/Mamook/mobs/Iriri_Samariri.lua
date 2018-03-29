@@ -1,10 +1,9 @@
 -----------------------------------
--- Area: Pashhow Marshlands
---  MOB: BoWho Warmonger
+-- Area: Mamook
+--   NM: Iriri Samariri (T2 ZNM)
 -----------------------------------
-require("scripts/globals/fieldsofvalor");
+mixins = {require("scripts/mixins/job_special")};
 -----------------------------------
 
 function onMobDeath(mob, player, isKiller)
-    checkRegime(player,mob,60,1);
 end;

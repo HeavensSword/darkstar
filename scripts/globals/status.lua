@@ -458,10 +458,10 @@ EFFECT_ALLIES_ROLL              = 335
 EFFECT_MISERS_ROLL              = 336
 EFFECT_COMPANIONS_ROLL          = 337
 EFFECT_AVENGERS_ROLL            = 338
--- EFFECT_NONE                      = 339
+EFFECT_NATURALISTS_ROLL         = 339
 EFFECT_WARRIOR_S_CHARGE         = 340
 EFFECT_FORMLESS_STRIKES         = 341
-EFFECT_ASSASSIN_S_CHARGE        = 342
+EFFECT_ASSASSINS_CHARGE         = 342
 EFFECT_FEINT                    = 343
 EFFECT_FEALTY                   = 344
 EFFECT_DARK_SEAL                = 345
@@ -715,7 +715,7 @@ EFFECT_VOIDSTORM_II             = 596
 EFFECT_INUNDATION               = 597
 EFFECT_CASCADE                  = 598
 EFFECT_CONSUME_MANA             = 599
-EFFECT_RUNEIST_S_ROLL           = 600
+EFFECT_RUNEISTS_ROLL            = 600
 EFFECT_CROOKED_CARDS            = 601
 EFFECT_VORSEAL                  = 602
 EFFECT_ELVORSEAL                = 603
@@ -806,6 +806,12 @@ EFFECTFLAG_WALTZABLE       = 0x4000
 EFFECTFLAG_FOOD            = 0x8000
 EFFECTFLAG_SONG            = 0x10000
 EFFECTFLAG_ROLL            = 0x20000
+EFFECTFLAG_SYNTH_SUPPORT   = 0x40000
+EFFECTFLAG_CONFRONTATION   = 0x80000
+EFFECTFLAG_LOGOUT          = 0x100000
+EFFECTFLAG_BLOODPACT       = 0x200000
+EFFECTFLAG_ON_JOBCHANGE    = 0x400000
+EFFECTFLAG_NO_CANCEL       = 0x800000
 
 ------------------------------------
 
@@ -1053,6 +1059,7 @@ MOD_AFFLATUS_MISERY    = 294
 MOD_CLEAR_MIND         = 295
 MOD_CONSERVE_MP        = 296
 MOD_STEAL              = 298
+MOD_PERFECT_DODGE      = 883 -- Increases Perfect Dodge duration in seconds
 MOD_BLINK              = 299
 MOD_STONESKIN          = 300
 MOD_PHALANX            = 301
@@ -1080,6 +1087,18 @@ MOD_ROLL_CORSAIRS      = 328
 MOD_ROLL_PUPPET        = 329
 MOD_ROLL_DANCERS       = 330
 MOD_ROLL_SCHOLARS      = 331
+-- Corsair Rolls Level 65+
+MOD_ROLL_BOLTERS       = 869
+MOD_ROLL_CASTERS       = 870
+MOD_ROLL_COURSERS      = 871
+MOD_ROLL_BLITZERS      = 872
+MOD_ROLL_TACTICIANS    = 873
+MOD_ROLL_ALLIES        = 874
+MOD_ROLL_MISERS        = 875
+MOD_ROLL_COMPANIONS    = 876
+MOD_ROLL_AVENGERS      = 877
+MOD_ROLL_NATURALISTS   = 878
+MOD_ROLL_RUNEISTS      = 879
 MOD_BUST               = 332
 MOD_FINISHING_MOVES    = 333
 MOD_SAMBA_DURATION     = 490 -- Samba duration bonus
@@ -1195,6 +1214,8 @@ MOD_COUNTERSTANCE_EFFECT     = 543 -- Counterstance effect in percents
 MOD_DODGE_EFFECT             = 552 -- Dodge effect in percents
 MOD_FOCUS_EFFECT             = 561 -- Focus effect in percents
 MOD_MUG_EFFECT               = 835 -- Mug effect as multiplier
+MOD_ACC_COLLAB_EFFECT        = 884 -- Increases amount of enmity transferred
+MOD_HIDE_DURATION            = 885 -- Hide duration increase (percentage based)
 MOD_REVERSE_FLOURISH_EFFECT  = 836 -- Reverse Flourish effect in tenths of squared term multiplier
 MOD_SENTINEL_EFFECT          = 837 -- Sentinel effect in percents
 MOD_REGEN_MULTIPLIER         = 838 -- Regen base multiplier
@@ -1321,11 +1342,15 @@ MOD_SCAVENGE_EFFECT           = 312 --
 MOD_DIA_DOT                   = 313 -- Increases the DoT damage of Dia
 MOD_SHARPSHOT                 = 314 -- Sharpshot accuracy bonus
 MOD_ENH_DRAIN_ASPIR           = 315 -- % damage boost to Drain and Aspir
+MOD_SNEAK_ATK_DEX             = 874 -- % DEX boost to Sneak Attack (if gear mod, needs to be equipped on hit)
 MOD_TRICK_ATK_AGI             = 520 -- % AGI boost to Trick Attack (if gear mod, needs to be equipped on hit)
 MOD_NIN_NUKE_BONUS            = 522 -- magic attack bonus for NIN nukes
 MOD_AMMO_SWING                = 523 -- Extra swing rate w/ ammo (ie. Jailer weapons). Use gearsets, and does nothing for non-players.
 MOD_AMMO_SWING_TYPE           = 826 -- For the handedness of the weapon - 1h (1) vs. 2h/h2h (2). h2h can safely use the same function as 2h.
 MOD_ROLL_RANGE                = 528 -- Additional range for COR roll abilities.
+MOD_PHANTOM_ROLL              = 881 -- Phantom Roll+ Effect from SOA Rings.
+MOD_PHANTOM_DURATION          = 882 -- Phantom Roll Duration +.
+
 MOD_ENHANCES_REFRESH          = 529 -- "Enhances Refresh" adds +1 per modifier to spell's tick result.
 MOD_NO_SPELL_MP_DEPLETION     = 530 -- % to not deplete MP on spellcast.
 MOD_FORCE_FIRE_DWBONUS        = 531 -- Set to 1 to force fire day/weather spell bonus/penalty. Do not have it total more than 1.
@@ -1349,6 +1374,12 @@ MOD_EBULLIENCE_AMOUNT         = 569 -- Bonus amount added to Ebullience effect
 MOD_WYVERN_EFFECTIVE_BREATH   = 829 -- Increases the threshold for triggering healing breath
 MOD_AQUAVEIL_COUNT            = 832 -- Modifies the amount of hits that Aquaveil absorbs before being removed
 MOD_SONG_RECAST_DELAY         = 833 -- Reduces song recast time in seconds.
+MOD_ENH_MAGIC_DURATION        = 890 -- Enhancing Magic Duration increase %
+MOD_ENHANCES_COURSERS_ROLL    = 891 -- Courser's Roll Bonus % chance
+MOD_ENHANCES_CASTERS_ROLL     = 892 -- Caster's Roll Bonus % chance
+MOD_ENHANCES_BLITZERS_ROLL    = 893 -- Blitzer's Roll Bonus % chance
+MOD_ENHANCES_ALLIES_ROLL      = 894 -- Allies' Roll Bonus % chance
+MOD_ENHANCES_TACTICIANS_ROLL  = 895 -- Tactician's Roll Bonus % chance
 
 -- Automaton mods
 MOD_AUTO_DECISION_DELAY    = 842 -- Reduces the Automaton's global decision delay
@@ -1366,6 +1397,10 @@ MOD_AOE_NA                    = 524 -- Set to 1 to make -na spells/erase always 
 MOD_AUGMENTS_CONVERT          = 525 -- Convert HP to MP Ratio Multiplier. Value = MP multiplier rate.
 MOD_AUGMENTS_SA               = 526 -- Adds Critical Attack Bonus to Sneak Attack, percentage based.
 MOD_AUGMENTS_TA               = 527 -- Adds Critical Attack Bonus to Trick Attack, percentage based.
+MOD_AUGMENTS_FEINT            = 873 -- Feint will give another -10 Evasion per merit level
+MOD_AUGMENTS_ASSASSINS_CHARGE = 886 -- Gives Assassin's Charge +1% Critical Hit Rate per merit level
+MOD_AUGMENTS_AMBUSH           = 887 -- Gives +1% Triple Attack per merit level when Ambush conditions are met
+MOD_AUGMENTS_AURA_STEAL       = 889 -- 20% chance of 2 effects to be dispelled or stolen per merit level
 MOD_JUG_LEVEL_RANGE           = 564 -- Decreases the level range of spawned jug pets. Maxes out at 2.
 MOD_FORCE_JUMP_CRIT           = 828 -- Critical hit rate bonus for jump and high jump
 MOD_QUICK_DRAW_DMG_PERCENT    = 834 -- Percentage increase to QD damage
@@ -1388,13 +1423,14 @@ MOD_ANCIENT_CIRCLE_DURATION = 859
 
 -- Other
 MOD_CURE2MP_PERCENT         = 860 -- Converts % of "Cure" amount to MP
+MOD_SAVETP                  = 880 -- SAVETP Effect for Miser's Roll / ATMA / Hagakure.
+
 
 -- The spares take care of finding the next ID to use so long as we don't forget to list IDs that have been freed up by refactoring.
 -- 570 - 825 used by WS DMG mods these are not spares.
--- SPARE = 869 -- stuff
--- SPARE = 870 -- stuff
--- SPARE = 870 -- stuff
-
+-- SPARE = 896 -- stuff
+-- SPARE = 897 -- stuff
+-- SPARE = 898 -- stuff
 ------------------------------------
 -- Merit Definitions
 ------------------------------------
@@ -2315,21 +2351,27 @@ ANIMATION_MOUNT                    = 85;
 ------------------------------------
 MOUNTS =
 {
-    MOUNT_CHOCOBO    = 0,
-    MOUNT_RAPTOR     = 1,
-    MOUNT_TIGER      = 2,
-    MOUNT_CRAB       = 3,
-    MOUNT_RED_CRAB   = 4,
-    MOUNT_BOMB       = 5,
-    MOUNT_RAM        = 6,
-    MOUNT_MORBOL     = 7,
-    MOUNT_CRAWLER    = 8,
-    MOUNT_FENRIR     = 9,
-    MOUNT_BEETLE     = 10,
-    MOUNT_MOOGLE     = 11,
-    MOUNT_MAGIC_POT  = 12,
-    MOUNT_TULFAIRE   = 13,
-    MOUNT_WARMACHINE = 14
+    CHOCOBO        = 0,
+    QUEST_RAPTOR   = 1,
+    RAPTOR         = 2,
+    TIGER          = 3,
+    CRAB           = 4,
+    RED_CRAB       = 5,
+    BOMB           = 6,
+    RAM            = 7,
+    MORBOL         = 8,
+    CRAWLER        = 9,
+    FENRIR         = 10,
+    BEETLE         = 11,
+    MOOGLE         = 12,
+    MAGIC_POT      = 13,
+    TULFAIRE       = 14,
+    WARMACHINE     = 15,
+    XZOMIT         = 16,
+    HIPPOGRYPH     = 17,
+    SPECTRAL_CHAIR = 18,
+    SPHEROID       = 19,
+    OMEGA          = 20,
 }
 
 ------------------------------------
